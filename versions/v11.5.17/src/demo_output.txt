@@ -1,0 +1,50 @@
+
+=== A: dense defect |z|<2^200
+modulus: 1024 bits;  plan (Smith order = prior*coverage/cost):
+  sparse C(64,4)                     prior 0.15 -> scan    predicted    0.0327 s, coverage 1.00   [options: lattice:2s/cov 1.00, scan:0.0327s/cov 1.00, fpmitm:0s/cov 0.00]
+  Fermat 2^20 steps                  prior 0.10 -> fermat  predicted     0.041 s, coverage 1.00   [options: fermat:0.041s/cov 1.00]
+  dense window |z|<2^200             prior 0.25 -> lattice predicted         2 s, coverage 1.00   [options: lattice:2s/cov 1.00]
+  sparse C(300,4)                    prior 0.15 -> fpmitm  predicted      3.45 s, coverage 1.00   [options: scan:6.64s/cov 1.00, fpmitm:3.45s/cov 1.00]
+  sparse C(300,6)                    prior 0.15 -> fpmitm  predicted      28.7 s, coverage 0.93   [options: scan:1.93e+04s/cov 1.00, fpmitm:28.7s/cov 0.93]
+  ran sparse C(64,4)                 scan    predicted   0.0327 s  actual    0.138 s  -> nothing
+  ran Fermat 2^20 steps              fermat  predicted    0.041 s  actual   0.0363 s  -> nothing
+  ran dense window |z|<2^200         lattice predicted        2 s  actual     2.11 s  -> FACTOR FOUND
+  RESULT: recovered via dense window |z|<2^200 (lattice); total predicted 2.1 s, actual 2.3 s
+
+=== B: sparse defect C(300,6)
+modulus: 1024 bits;  plan (Smith order = prior*coverage/cost):
+  sparse C(64,4)                     prior 0.15 -> scan    predicted    0.0327 s, coverage 1.00   [options: lattice:2s/cov 1.00, scan:0.0327s/cov 1.00, fpmitm:0s/cov 0.00]
+  Fermat 2^20 steps                  prior 0.10 -> fermat  predicted     0.041 s, coverage 1.00   [options: fermat:0.041s/cov 1.00]
+  dense window |z|<2^200             prior 0.25 -> lattice predicted         2 s, coverage 1.00   [options: lattice:2s/cov 1.00]
+  sparse C(300,4)                    prior 0.15 -> fpmitm  predicted      3.45 s, coverage 1.00   [options: scan:6.64s/cov 1.00, fpmitm:3.45s/cov 1.00]
+  sparse C(300,6)                    prior 0.15 -> fpmitm  predicted      28.7 s, coverage 0.93   [options: scan:1.93e+04s/cov 1.00, fpmitm:28.7s/cov 0.93]
+  ran sparse C(64,4)                 scan    predicted   0.0327 s  actual    0.076 s  -> nothing
+  ran Fermat 2^20 steps              fermat  predicted    0.041 s  actual   0.0331 s  -> nothing
+  ran dense window |z|<2^200         lattice predicted        2 s  actual    0.225 s  -> nothing
+  ran sparse C(300,4)                fpmitm  predicted     3.45 s  actual     4.17 s  -> nothing
+  ran sparse C(300,6)                fpmitm  predicted     28.7 s  actual     41.1 s  -> FACTOR FOUND
+  RESULT: recovered via sparse C(300,6) (fpmitm); total predicted 34.2 s, actual 45.6 s
+
+=== C: sparse defect C(64,4)
+modulus: 1024 bits;  plan (Smith order = prior*coverage/cost):
+  sparse C(64,4)                     prior 0.15 -> scan    predicted    0.0327 s, coverage 1.00   [options: lattice:2s/cov 1.00, scan:0.0327s/cov 1.00, fpmitm:0s/cov 0.00]
+  Fermat 2^20 steps                  prior 0.10 -> fermat  predicted     0.041 s, coverage 1.00   [options: fermat:0.041s/cov 1.00]
+  dense window |z|<2^200             prior 0.25 -> lattice predicted         2 s, coverage 1.00   [options: lattice:2s/cov 1.00]
+  sparse C(300,4)                    prior 0.15 -> fpmitm  predicted      3.45 s, coverage 1.00   [options: scan:6.64s/cov 1.00, fpmitm:3.45s/cov 1.00]
+  sparse C(300,6)                    prior 0.15 -> fpmitm  predicted      28.7 s, coverage 0.93   [options: scan:1.93e+04s/cov 1.00, fpmitm:28.7s/cov 0.93]
+  ran sparse C(64,4)                 scan    predicted   0.0327 s  actual   0.0261 s  -> FACTOR FOUND
+  RESULT: recovered via sparse C(64,4) (scan); total predicted 0.0 s, actual 0.0 s
+
+=== D: no defect (random-type modulus, z of full size)
+modulus: 1024 bits;  plan (Smith order = prior*coverage/cost):
+  sparse C(64,4)                     prior 0.15 -> scan    predicted    0.0327 s, coverage 1.00   [options: lattice:2s/cov 1.00, scan:0.0327s/cov 1.00, fpmitm:0s/cov 0.00]
+  Fermat 2^20 steps                  prior 0.10 -> fermat  predicted     0.041 s, coverage 1.00   [options: fermat:0.041s/cov 1.00]
+  dense window |z|<2^200             prior 0.25 -> lattice predicted         2 s, coverage 1.00   [options: lattice:2s/cov 1.00]
+  sparse C(300,4)                    prior 0.15 -> fpmitm  predicted      3.45 s, coverage 1.00   [options: scan:6.64s/cov 1.00, fpmitm:3.45s/cov 1.00]
+  sparse C(300,6)                    prior 0.15 -> fpmitm  predicted      28.7 s, coverage 0.93   [options: scan:1.93e+04s/cov 1.00, fpmitm:28.7s/cov 0.93]
+  ran sparse C(64,4)                 scan    predicted   0.0327 s  actual   0.0703 s  -> nothing
+  ran Fermat 2^20 steps              fermat  predicted    0.041 s  actual   0.0323 s  -> nothing
+  ran dense window |z|<2^200         lattice predicted        2 s  actual    0.285 s  -> nothing
+  ran sparse C(300,4)                fpmitm  predicted     3.45 s  actual     3.65 s  -> nothing
+  ran sparse C(300,6)                fpmitm  predicted     28.7 s  actual     40.8 s  -> nothing
+  RESULT: no defect found within the plan; total predicted 34.2 s, actual 44.9 s

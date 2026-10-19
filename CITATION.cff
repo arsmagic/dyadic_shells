@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using the metadata below (the concept DOI resolves to the latest version)."
+type: software
+title: "Dyadic Shells: Structural Diagnostics in Semiprime Arithmetic (preprint series)"
+authors:
+  - family-names: "Khachatryan"
+    given-names: "Arsen A."
+    orcid: "https://orcid.org/0009-0006-7629-3833"
+    affiliation: "SibarS Labs, SibarS Group of Companies"
+doi: "10.5281/zenodo.20306132"
+url: "https://doi.org/10.5281/zenodo.20306132"
+repository-code: "https://github.com/arsmagic/dyadic_shells"
+license: "CC-BY-NC-4.0"
+keywords:
+  - semiprime arithmetic
+  - dyadic shells
+  - anchored sparse-offset screening
+  - RSA weak keys
+  - factorization screening

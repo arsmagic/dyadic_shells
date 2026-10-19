@@ -1,0 +1,6 @@
+numpy>=1.24
+sympy>=1.12
+gmpy2>=2.1
+# FP-MITM lattice baseline (cop_lattice.py, auditor.py) only:
+fpylll>=0.6.0
+cysignals>=1.11
