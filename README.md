@@ -47,9 +47,9 @@ Test logs/                heavy v11-era diagnostic test logs (reference)
 ## Code availability
 
 The source code and data for each version are permanently archived on its Zenodo record and linked from that
-version's `README.md`. Code committed directly in this repository so far: **v11.0.3** and **v11.5.17**
-(under their `src/` folders). The earlier versions' code and data are linked to Zenodo; they can be committed here
-as well on request.
+version's `README.md`. Code committed directly in this repository: **v4.0, v5.10.18, v9.2.2, v10.5.1, v11.0.3, v11.5.17**
+(under their `src/` folders). **v6.5.7** and **v8.5.5** are theory papers with no accompanying code; **v7.1.5**'s
+code is linked on its Zenodo record. Every version's files remain archived and linked on its Zenodo record.
 
 ## How to cite the series
 

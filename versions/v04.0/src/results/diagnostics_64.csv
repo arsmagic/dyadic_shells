@@ -1,0 +1,7 @@
+family,sample_index,bit_size,n_bits,r,window_bits,weight,center_set_size,moduli_count,moduli,full_score_threshold,tmax,full_hits,has_full_hit,best_index,true_score,true_center_in_set,true_positive,fermat_iterations,generation_attempts,random_residue_full_hit_prob,familywise_false_positive_bound,elapsed_seconds
+random_balanced,0,64,64,32,10,2,45,8,3 5 7 11 13 17 19 23,8,7,0,False,19,,False,,9872857,2,0.009759523018373467,0.439178535826806,0.000219
+random_balanced,1,64,63,32,10,2,45,8,3 5 7 11 13 17 19 23,8,7,0,False,16,,False,,7,2,0.009759523018373467,0.439178535826806,0.000116
+random_balanced,2,64,63,32,10,2,45,8,3 5 7 11 13 17 19 23,8,6,0,False,3,,False,,17200395,2,0.009759523018373467,0.439178535826806,0.000142
+sparse_center,0,64,64,32,10,2,45,8,3 5 7 11 13 17 19 23,8,8,2,True,4,8,True,True,284248409,31,0.009759523018373467,0.439178535826806,0.000714
+sparse_center,1,64,64,32,10,2,45,8,3 5 7 11 13 17 19 23,8,8,1,True,12,8,True,True,290748369,23,0.009759523018373467,0.439178535826806,0.000489
+sparse_center,2,64,64,32,10,2,45,8,3 5 7 11 13 17 19 23,8,8,1,True,12,8,True,True,1222746531,6,0.009759523018373467,0.439178535826806,0.000212

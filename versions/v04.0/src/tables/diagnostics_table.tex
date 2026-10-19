@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\caption{Public modular diagnostic scores: random baseline vs. sparse-center positives.}
+\label{tab:diagnostic-scores}
+\begin{tabular}{@{}llrrrrrr@{}}
+\toprule
+Bits & Family & Samples & $|\mathcal A|$ & $|\mathcal M|$ & Mean $T_{\max}$ & Full-hit rate & True-positive rate \\
+\midrule
+64 & random & 3 & 45 & 8 & 6.667 $\pm$ 0.471 & 0 & -- \\
+64 & sparse-center & 3 & 45 & 8 & 8.000 $\pm$ 0 & 1.000 & 1.000 \\
+128 & random & 5 & 66 & 10 & 8.600 $\pm$ 0.490 & 0 & -- \\
+128 & sparse-center & 5 & 66 & 10 & 10.000 $\pm$ 0 & 1.000 & 1.000 \\
+\bottomrule
+\end{tabular}
+\end{table}

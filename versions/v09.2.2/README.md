@@ -14,6 +14,10 @@ Base-shell diagnostics for individual congruences of squares; a reproducibility 
 - **PDF:** [Khachatryan_A_A_0009-0006-7629-3833_Base-Shell_Diagnostics_in_Semiprime_Arithmetic.pdf](https://zenodo.org/records/20999427/files/Khachatryan_A_A_0009-0006-7629-3833_Base-Shell_Diagnostics_in_Semiprime_Arithmetic.pdf?download=1)
 - **Always-latest (concept DOI):** [10.5281/zenodo.20306132](https://doi.org/10.5281/zenodo.20306132)
 
+## Code in this folder
+
+The base-shell reproducibility test suite is committed here under [`src/`](./src): the numbered pipeline in `scripts/` (plus `base_shell_lib.py`), input `data/`, and `requirements.txt`. See [`src/README.md`](./src/README.md).
+
 ## Files archived on Zenodo
 
 The authoritative, citable copy of every file lives on the Zenodo record ([10.5281/zenodo.20999427](https://doi.org/10.5281/zenodo.20999427)). Direct links:

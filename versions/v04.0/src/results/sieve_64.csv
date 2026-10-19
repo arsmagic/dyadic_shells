@@ -1,0 +1,4 @@
+sample_index,bit_size,n_bits,r,window_bits,weight,center_set_size,factor_base_size,moduli,theoretical_survival_fraction,theoretical_survivors,empirical_survivors,true_center_survived,exact_square_tests_naive,exact_square_tests_after_sieve,estimated_exact_test_speedup,sieve_elapsed_seconds,naive_square_elapsed_seconds,generation_attempts,fermat_iterations
+0,64,63,32,10,2,45,5,3 5 7 11 13,0.06713286713286712,3.0209790209790204,2,True,45,2,22.5,0.000018,0.000009,37,1301290996
+1,64,64,32,10,2,45,5,3 5 7 11 13,0.06713286713286712,3.0209790209790204,3,True,45,3,15.0,0.000016,0.000008,18,1082977360
+2,64,63,32,10,2,45,5,3 5 7 11 13,0.06713286713286712,3.0209790209790204,3,True,45,3,15.0,0.000016,0.000008,12,1304700423
