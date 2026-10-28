@@ -8,11 +8,28 @@
 - `weighted_center_decomposition`: sum/difference recover `ap,bq`.
 - `weighted_center_square_identity`: `A²-abpq=t²`.
 - `weighted_center_factor_witnesses`: divisibility by factors.
+- `square_certificate_factorization`: arbitrary exact square certificate
+  `A²-N=t²` gives the explicit factorization `N=(A-t)(A+t)` (no planted
+  multipliers required). **[proved, CI #8]**
+- `square_certificate_dvd`: both cofactors `(A-t),(A+t)` divide `N`.
+  **[proved, CI #8]**
+- `gcd_factor_recovery`: exact recovery `gcd(A+t,N)=|p|`, `gcd(A-t,N)=|q|`
+  in the planted-multiplier setting. **[proved, CI #8]**
 
-**Open:** formulate and prove precise gcd equalities using distinct odd
-prime hypotheses and suitable cross-coprimality conditions, avoiding
-unjustified assumptions on multiplier orientation. Formalize that an
-arbitrary square witness plus a proper nontrivial gcd certifies a factor.
+**Status (Target 1): proved in Lean, pending review.** The gcd recovery is
+stated with the **exact cross-coprimality hypotheses** `gcd(a,q)=1`,
+`gcd(b,p)=1` (Int.gcd), rather than the source's *sufficient* bound
+`a,b<min(p,q)`; `gcd(a,b)=1` is deliberately not used (insufficient, per the
+source warning). No primeness of `p,q` is needed for these statements. The
+result is `=|p|,|q|` (natAbs), matching the ℕ-valued `Int.gcd`.
+
+**Remaining for Target 1 (review-level, not code):**
+- Human/reviewer confirmation that these statements faithfully encode the
+  published Proposition 3.1 (including that the exact-coprimality hypotheses
+  are the intended reading of the source's conditions).
+- Optional: a corollary deriving the cross-coprimality conditions from the
+  source's bound `0<a,b<min(p,q)` with `p,q` distinct primes, if the published
+  hypotheses are preferred verbatim.
 
 ## 2. Exact quadratic-residue sieve fraction
 
