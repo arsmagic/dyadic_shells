@@ -1,5 +1,6 @@
 import DyadicShells.Soundness
 import DyadicShells.QRSieve
+import DyadicShells.TwoAdicSaturation
 
 /-!
 # Axiom audit (Target 1)
@@ -32,3 +33,13 @@ red flag; none are present here.
 #print axioms DyadicShells.qr_quadratic_character_sum
 #print axioms DyadicShells.qr_exact_pass_count_double
 #print axioms DyadicShells.qr_exact_pass_count
+
+/-! ## Target 3: two-adic saturation (Proposition 4.2) -/
+#print axioms DyadicShells.odd_sq_modEq_one_eight
+#print axioms DyadicShells.isSquare_mod_two_pow_of_one_mod_eight
+#print axioms DyadicShells.twoAdicPass_of_succ
+#print axioms DyadicShells.class_passesZ
+#print axioms DyadicShells.twoAdicPass_of_intWitness
+#print axioms DyadicShells.twoAdicPass_of_classN
+#print axioms DyadicShells.twoAdicPass_congr
+#print axioms DyadicShells.twoadic_saturation
