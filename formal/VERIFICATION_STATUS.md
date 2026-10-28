@@ -86,14 +86,52 @@ The axiom audit for run #35 lists all five Target 2 declarations
 No equidistribution, independent-filter, or probabilistic hypothesis is
 introduced.
 
+## Target 3: Uniform two-adic saturation
+
+**Mathematical status: Lean-proved.** Proposition 4.2's uniform lower
+bound on the two-adic pass density is formalized in
+`DyadicShells/TwoAdicSaturation.lean` as `twoadic_saturation`: for odd
+`N ≥ 3` there is `v = v₂((N-1)/2)` such that for every `m`
+
+  `2^m ≤ 2^(2v+3) · #{A < 2^m : A²-N is a square mod 2^m}`,
+
+i.e. the pass proportion `π_m(N) ≥ 2^(-(2v+3))`, uniformly in `m`.
+
+- [x] Hensel square-lifting `isSquare_mod_two_pow_of_one_mod_eight`
+      (`c ≡ 1 mod 8 ⇒ ∀ k, ∃ y, y² ≡ c mod 2^k`) and `odd² ≡ 1 mod 8`.
+- [x] The whole residue class `A ≡ 2^v·w + 1 (mod 2^(2v+3))` is
+      two-adically square at every level (`class_passesZ`,
+      `twoAdicPass_of_classN`), via the `2`-adic decomposition
+      `(N-1)/2 = 2^v·w`, `w` odd.
+- [x] Monotone descent `twoAdicPass_of_succ` (squareness mod `2^(m+1)`
+      ⇒ mod `2^m`), the monotonicity ingredient of `π_m`.
+- [x] The density count: injecting the arithmetic progression
+      `r + j·2^(2v+3)` of passing residues gives `#pass ≥ 2^(m-(2v+3))`.
+- [x] Lean 4.24.0 and pinned Mathlib v4.24.0: successful CI build and
+      axiom audit
+      ([run #44](https://github.com/arsmagic/dyadic_shells/actions/runs/40716469544),
+      commit `768e425`).
+- [ ] External, independent human mathematical peer review (recommended;
+      **not** a Lean proof gap).
+
+### Machine proof and axiom policy (Target 3)
+
+The axiom audit for run #44 lists all Target 3 declarations
+(`odd_sq_modEq_one_eight`, `isSquare_mod_two_pow_of_one_mod_eight`,
+`twoAdicPass_of_succ`, `class_passesZ`, `twoAdicPass_of_intWitness`,
+`twoAdicPass_of_classN`, `twoAdicPass_congr`, `twoadic_saturation`) as
+depending only on `propext`, `Classical.choice`, `Quot.sound` (two of them
+only on `propext`), with no `sorryAx` or `Lean.ofReduceBool`;
+`sorry`/`admit` are rejected in the same run. The proof is purely
+arithmetic/Hensel: no equidistribution or probabilistic hypothesis.
+
 ## Remaining research targets
 
-- [ ] **Target 3** — full Proposition 4.2: uniform two-adic saturation bound.
 - [ ] Author approval for any **new DOI or external manuscript**.
 
-**Targets 1 and 2 are Lean-proved; Target 3 is not yet verified — do not
-report it as complete.** Experimental performance, FP-MITM complexity, and
-novelty are outside the scope of these formal proofs.
+**Targets 1, 2 and 3 are all Lean-proved.** Experimental performance,
+FP-MITM complexity, and novelty are outside the scope of these formal
+proofs; an external human referee review is still recommended.
 
 AI assistance was used in preparing the formalization; the mathematical
 author remains responsible for claims in any later scientific publication.

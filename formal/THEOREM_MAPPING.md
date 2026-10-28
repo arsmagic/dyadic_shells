@@ -104,12 +104,24 @@ For odd N ≥3 and `v=v₂((N−1)/2)`, for every `m`,
 `πₘ(N)≥2^(-(2v+3))`.
 
 **Lean:** `DyadicShells/TwoAdicSaturation.lean`
-- `odd_center_witness`: explicit integral square certificate.
-- `every_odd_has_twoAdic_witness`: non-emptiness at each modulus.
+- `odd_center_witness`, `every_odd_has_twoAdic_witness`: explicit integral
+  square certificate and non-emptiness at each modulus.
+- `odd_sq_modEq_one_eight`, `isSquare_mod_two_pow_of_one_mod_eight`:
+  Hensel square-lifting, `c≡1 mod 8 ⇒ ∀k ∃y, y²≡c mod 2^k`.
+- `class_passesZ`, `twoAdicPass_of_classN`: the full class
+  `A≡2^v·w+1 mod 2^(2v+3)` (with `(N-1)/2=2^v·w`, `w` odd) is a 2-adic
+  square at every level. **[proved]**
+- `twoAdicPass_of_succ`: squareness descends `m+1 → m` (monotonicity of π_m).
+- `twoadic_saturation`: the uniform density bound
+  `2^m ≤ 2^(2v+3)·#{A<2^m : A²-N a square mod 2^m}` for odd `N≥3` and
+  every `m`, i.e. `π_m(N) ≥ 2^(-(2v+3))`. **[proved]**
 
-**Open:** square lifting to the 2-adics for the full congruence class
-`A≡(N+1)/2 mod 2^(2v+3)` and cardinality/density lower bound
-uniform in m. Non-emptiness alone is not saturation.
+**Status (Target 3): Lean-proved.** Verified by CI
+[run #44](https://github.com/arsmagic/dyadic_shells/actions/runs/40716469544)
+(commit `768e425`): `lake build`, axiom audit (standard axioms only; no
+`sorryAx`/`ofReduceBool`), and `sorry`/`admit` rejection all succeeded.
+The congruence-class lifting (not mere non-emptiness) gives the uniform
+positive density. Machine verification, not an external human peer review.
 
 ## Scope exclusions
 
