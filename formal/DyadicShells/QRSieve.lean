@@ -59,6 +59,13 @@ open Finset
 def qrPairs (F : Type*) [Field F] (N : F) :=
   {v : F × F // v.1 ^ 2 - v.2 ^ 2 = N}
 
+noncomputable instance qrPairsFintype
+    {F : Type*} [Field F] [Fintype F] (N : F) :
+    Fintype (qrPairs F N) := by
+  classical
+  change Fintype {v : F × F // v.1 ^ 2 - v.2 ^ 2 = N}
+  infer_instance
+
 private theorem qrPairs_mul
     {F : Type*} [Field F] (N : F) (v : qrPairs F N) :
     (v.1.1 - v.1.2) * (v.1.1 + v.1.2) = N := by
