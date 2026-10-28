@@ -9,15 +9,14 @@
 - [ ] Independent reviewer validates theorem mapping (incl. Prop 3.1 above).
 - [ ] Author approves publication or merge.
 
-**Do not report “three theorems Lean verified”.** As of CI run #8, the
-Proposition 3.1 factor-recovery statements are code-proved under Lean 4.24.0 and
-pinned Mathlib v4.24.0 with no proof holes; **Propositions 4.1 and 4.2 remain
-unproved**, and independent equivalence-to-prose review for all targets is still
-open. `#print axioms` was not run locally (the Lean toolchain host is blocked by
-the build environment's proxy policy); the "Reject proof holes" grep confirms no
-`sorry`/`admit`/`axiom`/`unsafe`, so no `sorryAx` is introduced — only the
-standard Mathlib axioms (`propext`, `Classical.choice`, `Quot.sound`) are relied
-on via `ring`/`linarith`/`Int.gcd_mul_left`.
+**Do not report “three theorems Lean verified”.** As of CI run #14, the
+Proposition 3.1 factor-recovery statements (T1-A/B/C) are code-proved under Lean
+4.24.0 and pinned Mathlib v4.24.0 with no proof holes; **Propositions 4.1 and
+4.2 remain unproved**, and independent equivalence-to-prose review for all
+targets is still open. `#print axioms` is run in CI (the audit step below), not
+locally — the Lean toolchain host is blocked by the build environment's proxy
+policy — and its output is recorded verbatim: only the standard Mathlib axioms
+(`propext`, `Classical.choice`, `Quot.sound`) appear.
 No `sorry` or `admit` is used.
 
 ## Axiom audit (T1-C)
