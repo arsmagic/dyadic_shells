@@ -87,7 +87,7 @@ private theorem sq_lift_aux (c : ℤ) (hc : c ≡ 1 [ZMOD 8]) :
 theorem isSquare_mod_two_pow_of_one_mod_eight
     (c : ℤ) (hc : c ≡ 1 [ZMOD 8]) (k : ℕ) :
     ∃ y : ℤ, y ^ 2 ≡ c [ZMOD 2 ^ k] := by
-  rcases le_or_lt 3 k with hk | hk
+  rcases le_or_gt 3 k with hk | hk
   · obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le hk
     obtain ⟨y, _, hy⟩ := sq_lift_aux c hc j
     refine ⟨y, ?_⟩
@@ -203,6 +203,7 @@ i.e. the pass proportion `π_m(N) ≥ 2^(-(2v+3))`, uniform in `m`.
 /-- **Proposition 4.2 (two-adic saturation).** For odd `N ≥ 3`, the number
 of residues `A < 2^m` that two-adically pass is at least `2^(m-(2v+3))`:
 `2^(2v+3) · #pass ≥ 2^m`, uniformly in `m`, where `v = v₂((N-1)/2)`. -/
+open Classical in
 theorem twoadic_saturation (N : ℕ) (hodd : Odd N) (h3 : 3 ≤ N) :
     ∃ v : ℕ, ∀ m : ℕ,
       2 ^ m ≤ 2 ^ (2 * v + 3) *
@@ -219,7 +220,7 @@ theorem twoadic_saturation (N : ℕ) (hodd : Odd N) (h3 : 3 ≤ N) :
   have hpass : ∀ A : ℕ, A ≡ 2 ^ v * w + 1 [MOD 2 ^ (2 * v + 3)] →
       twoAdicPass (2 * (2 ^ v * w) + 1) m A :=
     fun A hA => twoAdicPass_of_classN v w A m hw hA
-  rcases le_or_lt m (2 * v + 3) with hmd | hmd
+  rcases le_or_gt m (2 * v + 3) with hmd | hmd
   · -- small m: a single witness suffices
     have hpA0 : twoAdicPass (2 * (2 ^ v * w) + 1) m ((2 ^ v * w + 1) % 2 ^ m) :=
       twoAdicPass_congr (Nat.mod_modEq _ _)
