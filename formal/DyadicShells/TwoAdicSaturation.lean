@@ -1,7 +1,7 @@
 import Mathlib
 
 /-!
-# Two-adic square witnesses: a checked starting lemma
+# Two-adic saturation: uniform pass-density lower bound (Proposition 4.2)
 
 Source: Khachatryan v11.0.3, Proposition 4.2, and v11.5.17.
 
@@ -9,9 +9,12 @@ The published saturation theorem states that for odd N ≥ 3, the fraction
 of A modulo 2^m such that A² - N is a square is bounded below by
 2^(-(2 * v₂((N-1)/2) + 3)), uniformly in m.
 
-This file proves an exact witness for every odd N and every 2-power modulus.
-It does **not** yet establish the claimed positive uniform density:
-one witness per modulus does not imply a lower bound independent of m.
+This file proves that bound in full (`twoadic_saturation`). Beyond the exact
+single witness (`odd_center_witness`), it establishes the uniform positive
+density: a Hensel square-lift shows the whole residue class
+A ≡ (N+1)/2 (mod 2^(2v+3)) is two-adically square (`class_passesZ`,
+`twoAdicPass_of_classN`), and a counting argument over that class gives
+`2^(2v+3) · #{A < 2^m : A²-N a square mod 2^m} ≥ 2^m` for every m.
 See THEOREM_MAPPING.md.
 -/
 
