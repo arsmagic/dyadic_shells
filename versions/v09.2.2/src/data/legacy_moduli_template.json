@@ -1,0 +1,42 @@
+[
+  {
+    "name": "RSA-110",
+    "N": "PASTE_DECIMAL_MODULUS_HERE",
+    "category": "rsa_challenge_continuity",
+    "factors_known": false,
+    "p": "",
+    "q": ""
+  },
+  {
+    "name": "RSA-260",
+    "N": "PASTE_DECIMAL_MODULUS_HERE",
+    "category": "rsa_challenge_continuity",
+    "factors_known": false,
+    "p": "",
+    "q": ""
+  },
+  {
+    "name": "RSA-270",
+    "N": "PASTE_DECIMAL_MODULUS_HERE",
+    "category": "rsa_challenge_continuity",
+    "factors_known": false,
+    "p": "",
+    "q": ""
+  },
+  {
+    "name": "RSA-896",
+    "N": "PASTE_DECIMAL_MODULUS_HERE",
+    "category": "rsa_challenge_continuity",
+    "factors_known": false,
+    "p": "",
+    "q": ""
+  },
+  {
+    "name": "ROCA-1024",
+    "N": "PASTE_DECIMAL_MODULUS_HERE",
+    "category": "structured_single_instance_roca_style",
+    "factors_known": false,
+    "p": "",
+    "q": ""
+  }
+]

@@ -14,6 +14,10 @@ Two-adic admissibility of shell triples, visible square divisors and trivial-bra
 - **PDF:** [Khachatryan_A_A_0009-0006-7629-3833_Dyadic_Shell Arithmetic_v5.10.18.pdf](https://zenodo.org/records/20484456/files/Khachatryan_A_A_0009-0006-7629-3833_Dyadic_Shell%20Arithmetic_v5.10.18.pdf?download=1)
 - **Always-latest (concept DOI):** [10.5281/zenodo.20306132](https://doi.org/10.5281/zenodo.20306132)
 
+## Code in this folder
+
+The v5 screening scripts are committed here under [`src/`](./src): the inverse-trace prime-seed screen, the improved polynomial screening, a log parser, and a sample ROCA-style public test key (with per-script READMEs).
+
 ## Files archived on Zenodo
 
 The authoritative, citable copy of every file lives on the Zenodo record ([10.5281/zenodo.20484456](https://doi.org/10.5281/zenodo.20484456)). Direct links:

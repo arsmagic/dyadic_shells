@@ -14,6 +14,10 @@ Introduces the dyadic-shell framework: semiprimes represented through dyadic-anc
 - **PDF:** [Khachatryan_Dyadic_Shell_Framework_v4_0.pdf](https://zenodo.org/records/20350133/files/Khachatryan_Dyadic_Shell_Framework_v4_0.pdf?download=1)
 - **Always-latest (concept DOI):** [10.5281/zenodo.20306132](https://doi.org/10.5281/zenodo.20306132)
 
+## Code in this folder
+
+The v4.0 reproducibility package is committed here under [`src/`](./src): analysis scripts (`scripts/`), sample results (`results/`), LaTeX tables (`tables/`), `requirements.txt` and notes. See [`src/README.md`](./src/README.md).
+
 ## Files archived on Zenodo
 
 The authoritative, citable copy of every file lives on the Zenodo record ([10.5281/zenodo.20350133](https://doi.org/10.5281/zenodo.20350133)). Direct links:

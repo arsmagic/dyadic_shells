@@ -14,6 +14,10 @@ Center-compressible semiprimes: search entropy, sparse-vs-dense diagnostics, emp
 - **PDF:** [Khachatyan_A_A_0009-0006-7629-3833_Dyadic_shell_positive_controls_v10_5_1.pdf](https://zenodo.org/records/22055615/files/Khachatyan_A_A_0009-0006-7629-3833_Dyadic_shell_positive_controls_v10_5_1.pdf?download=1)
 - **Always-latest (concept DOI):** [10.5281/zenodo.20306132](https://doi.org/10.5281/zenodo.20306132)
 
+## Code in this folder
+
+The v10.5.1 source package is committed here under [`src/`](./src): exact 1024-bit sparse-centre certificates (`certificates/`), diagnostic results (`results/`) and figures (`figures_v05/`). See [`src/README_VERSION_10_5_1.txt`](./src/README_VERSION_10_5_1.txt).
+
 ## Files archived on Zenodo
 
 The authoritative, citable copy of every file lives on the Zenodo record ([10.5281/zenodo.22055615](https://doi.org/10.5281/zenodo.22055615)). Direct links:
