@@ -110,7 +110,8 @@ noncomputable def qrPairsEquivNonzero
 /-- The number of centers A with A²=N, cast to the integers, is
 1 + the quadratic character of N. -/
 theorem qr_zero_center_count
-    {F : Type*} [Field F] [Fintype F] (h2 : ringChar F ≠ 2) (N : F) :
+    {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+    (h2 : ringChar F ≠ 2) (N : F) :
     (({A : F | A ^ 2 = N}.toFinset.card : ℤ)) =
       quadraticChar F N + 1 := by
   classical
