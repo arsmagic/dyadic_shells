@@ -23,3 +23,4 @@ red flag; none are present here.
 #print axioms DyadicShells.weighted_certificate_factorization
 #print axioms DyadicShells.gcd_dvd_modulus
 #print axioms DyadicShells.proper_divisor_criterion
+#print axioms DyadicShells.proper_divisor_criterion_either_sign
