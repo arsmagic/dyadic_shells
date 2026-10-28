@@ -229,7 +229,8 @@ theorem qr_exact_pass_count_double
       (2 : ℤ) * (if IsSquare (A ^ 2 - N) then 1 else 0) =
         1 + quadraticChar F (A ^ 2 - N) +
           (if A ^ 2 = N then 1 else 0) := by
-    simpa only [sub_eq_zero] using (qr_square_indicator (A ^ 2 - N))
+    rw [← sub_eq_zero]
+    exact qr_square_indicator (A ^ 2 - N)
   have hchar := qr_quadratic_character_sum h2 N hN
   have hroot := qr_zero_center_count h2 N
   calc
