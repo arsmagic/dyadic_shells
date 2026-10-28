@@ -74,7 +74,7 @@ For odd prime ℓ not dividing N,
 - `square_test_iff_factor_pair` gives the `(A−y)(A+y)=N` identity.
 - `exact_square_witness_passes` establishes finite-field sieve soundness.
 
-**Current draft in PR #3 (independently authored):**
+**Exact count (Target 2, proved):**
 - `qrPairsEquivNonzero`: explicit equivalence between the conic
   `A²-y²=N` and nonzero field elements for `N≠0` and characteristic ≠2.
 - `qrPairsEquivSigma`: reindex pairs by their first coordinate.
@@ -85,13 +85,17 @@ For odd prime ℓ not dividing N,
 - `qr_exact_pass_count_double` and `qr_exact_pass_count`:
   the exact count `2·#pass = #F+χ(N)` and
   `#pass=(#F+χ(N))/2` for any finite field with odd characteristic
-  and `N≠0`. The passing predicate includes zero.
+  and `N≠0`. The passing predicate includes zero. **[proved]**
 
-**Status:** complete proof *candidate*, pending successful CI on the
-latest PR #3 head. No claim of Lean-verified completion until GitHub
-Actions reports success. No equidistribution, independent-filter or
-probabilistic hypotheses are introduced. The generic finite-field
-form is stronger than the source's prime-field case.
+**Status (Target 2): Lean-proved.** Verified by CI
+[run #35](https://github.com/arsmagic/dyadic_shells/actions/runs/40697899551)
+(commit `2e03d72`): `lake build`, axiom audit (all five declarations
+depend only on `propext`, `Classical.choice`, `Quot.sound`; no `sorryAx`
+or `Lean.ofReduceBool`), and `sorry`/`admit` rejection all succeeded.
+No equidistribution, independent-filter or probabilistic hypothesis is
+introduced. The generic finite-field form is stronger than the source's
+prime-field case. This is machine verification, not an external human
+peer review.
 
 ## 3. Two-adic saturation
 
