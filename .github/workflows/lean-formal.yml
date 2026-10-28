@@ -5,6 +5,11 @@ on:
     paths:
       - "formal/**"
       - ".github/workflows/lean-formal.yml"
+  push:
+    branches: [main]
+    paths:
+      - "formal/**"
+      - ".github/workflows/lean-formal.yml"
   workflow_dispatch:
 
 jobs:
