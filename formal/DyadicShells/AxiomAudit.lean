@@ -7,8 +7,9 @@ import DyadicShells.Soundness
 `lake build` and therefore appears in the GitHub Actions log.
 
 Only the standard Mathlib axioms `propext`, `Classical.choice`, and `Quot.sound`
-are expected. Any `sorryAx` (from `sorry`/`admit`), a custom `axiom`, or
-`Lean.ofReduceBool` (from `native_decide`) would be a red flag; none are used.
+are expected. A proof-hole axiom (`sorryAx`), a user-declared axiom, or
+`Lean.ofReduceBool` (introduced by compiled-decision tactics) would each be a
+red flag; none are present here.
 -/
 
 #print axioms DyadicShells.weighted_center_decomposition
