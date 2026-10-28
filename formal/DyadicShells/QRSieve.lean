@@ -95,7 +95,7 @@ noncomputable def qrPairsEquivNonzero
     dsimp
     calc
       ((u.1 + N / u.1) / 2) ^ 2 - ((N / u.1 - u.1) / 2) ^ 2 =
-          u.1 * (N / u.1) := by field_simp [h2, u.2] <;> ring
+          u.1 * (N / u.1) := by field_simp [h2, u.2]; ring
       _ = N := hm⟩
   left_inv v := by
     have hu := qrPairs_sub_ne_zero N hN v
@@ -107,14 +107,14 @@ noncomputable def qrPairsEquivNonzero
     apply Prod.ext
     · dsimp
       rw [hv]
-      field_simp [h2] <;> ring
+      field_simp [h2]; ring
     · dsimp
       rw [hv]
-      field_simp [h2] <;> ring
+      field_simp [h2]; ring
   right_inv u := by
     apply Subtype.ext
     dsimp
-    field_simp [h2, u.2] <;> ring
+    field_simp [h2, u.2]; ring
 
 /-- The number of centers A with A²=N, cast to the integers, is
 1 + the quadratic character of N. -/
@@ -175,7 +175,7 @@ theorem qr_quadratic_character_sum
     Fintype.card_congr (qrPairsEquivNonzero N hN htwo)
   have hcomplement :
       Fintype.card {u : F // u ≠ 0} = Fintype.card F - 1 := by
-    simpa using (Fintype.card_subtype_compl (fun u : F => u = 0))
+    simp
   have hfieldNonempty : 0 < Fintype.card F :=
     Fintype.card_pos_iff.mpr ⟨(0 : F)⟩
   have hcard : (Fintype.card (qrPairs F N) : ℤ) =
@@ -200,7 +200,7 @@ private theorem qr_square_indicator
   by_cases hz : z = 0
   · subst z
     have hs : IsSquare (0 : F) := ⟨0, by simp⟩
-    simp [hs, quadraticChar_zero]
+    simp [hs]
   · by_cases hs : IsSquare z
     · have hχ : quadraticChar F z = 1 :=
         (quadraticChar_one_iff_isSquare hz).2 hs
@@ -219,14 +219,10 @@ theorem qr_exact_pass_count_double
   classical
   have hpass : ((passingCenters F N).card : ℤ) =
       ∑ A : F, if IsSquare (A ^ 2 - N) then (1 : ℤ) else 0 := by
-    simpa [passingCenters] using
-      (Finset.natCast_card_filter (R := ℤ)
-        (fun A : F => IsSquare (A ^ 2 - N)) Finset.univ)
+    simp [passingCenters]
   have hzero : (({A : F | A ^ 2 = N}.toFinset.card : ℤ)) =
       ∑ A : F, if A ^ 2 = N then (1 : ℤ) else 0 := by
-    simpa [Set.toFinset_setOf] using
-      (Finset.natCast_card_filter (R := ℤ)
-        (fun A : F => A ^ 2 = N) Finset.univ)
+    simp [Set.toFinset_setOf]
   have hpoint (A : F) :
       (2 : ℤ) * (if IsSquare (A ^ 2 - N) then 1 else 0) =
         1 + quadraticChar F (A ^ 2 - N) +
