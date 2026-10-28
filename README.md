@@ -51,6 +51,20 @@ version's `README.md`. Code committed directly in this repository: **v4.0, v5.10
 (under their `src/` folders). **v6.5.7** and **v8.5.5** are theory papers with no accompanying code; **v7.1.5**'s
 code is linked on its Zenodo record. Every version's files remain archived and linked on its Zenodo record.
 
+## Lean 4 formal verification
+
+The [`formal/`](./formal) project contains the machine-checked
+**Target 1: Soundness and Factor Recovery** corresponding to
+v11.0.3, Proposition 3.1, with an internal check against the published
+PDF (p. 3). It covers the planted-factor recovery and both-sign
+proper-divisor converse. CI builds with pinned Lean 4 / Mathlib and
+audits proof axioms. Independent human peer review remains recommended.
+**Targets 2 (QR sieve count) and 3 (two-adic saturation) are not yet
+fully formalized.**
+
+- [Lean status and exact scope](./formal/VERIFICATION_STATUS.md)
+- [Lean verification workflow](https://github.com/arsmagic/dyadic_shells/actions/workflows/lean-formal.yml)
+
 ## How to cite the series
 
 Cite the concept DOI to reference the series as a whole (resolves to the latest version), or a version DOI for a
