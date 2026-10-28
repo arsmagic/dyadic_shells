@@ -3,8 +3,8 @@
 **Mathematical author:** Arsen A. Khachatryan (ORCID 0009-0006-7629-3833)  
 **Affiliation:** SibarS Labs  
 **Status:** Target 1 (soundness & factor recovery) is **Lean-proved in CI**
-(Lean 4.24.0 / Mathlib v4.24.0, green run #11 = `40658098732`, no proof holes,
-axioms audited). Targets 2 & 3 are **not yet proved**. Full-proposition
+(Lean 4.24.0 / Mathlib v4.24.0, green run #14 = `40660521229`, no proof holes;
+axioms audited in CI — only `propext`, `Classical.choice`, `Quot.sound`). Targets 2 & 3 are **not yet proved**. Full-proposition
 equivalence-to-prose review by the author/reviewer is still pending.
 
 Source publications:

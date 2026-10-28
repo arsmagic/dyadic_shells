@@ -3,7 +3,7 @@
 - [x] Branch opened for isolated work; no changes to main.
 - [x] Lean/mathlib configuration and initial source modules committed.
 - [x] The initial partial-formalization modules compile with `lake build` in GitHub Actions, run 40651327555 (2026-10-28).
-- [x] **Proposition 3.1 factor recovery — Lean-proved (T1-A / T1-B / T1-C)**. Green CI run 40658098732 (#11): `lake build` (Lean 4.24.0 / Mathlib v4.24.0), "Reject proof holes", and the imported axiom-audit module all passed; no `sorry`/`admit`. Theorems in `DyadicShells/Soundness.lean`: `square_certificate_factorization`, `square_certificate_dvd`, `gcd_factor_recovery`, `prop31_factor_recovery`, `prop31_recovered_proper`, `weighted_certificate_factorization`, `gcd_dvd_modulus`, `proper_divisor_criterion`, plus the `n=35,k=3,A=53,t=52` regression `example`s. *Equivalence-to-published-prose review still pending (checkbox below).*
+- [x] **Proposition 3.1 factor recovery — Lean-proved (T1-A / T1-B / T1-C)**. Green CI run 40660521229 (#14): `lake build` (Lean 4.24.0 / Mathlib v4.24.0), the "Axiom audit" step (prints `#print axioms`, fails on `sorryAx`/`ofReduceBool`), and "Reject proof holes" all passed; no `sorry`/`admit`. Theorems in `DyadicShells/Soundness.lean`: `square_certificate_factorization`, `square_certificate_dvd`, `gcd_factor_recovery`, `prop31_factor_recovery`, `prop31_recovered_proper`, `weighted_certificate_factorization`, `gcd_dvd_modulus`, `proper_divisor_criterion`, plus the `n=35,k=3,A=53,t=52` regression `example`s. *Equivalence-to-published-prose review still pending (checkbox below).*
 - [ ] Full published Proposition 4.1 exact finite-field count proved.
 - [ ] Full published Proposition 4.2 uniform 2-adic density bound proved.
 - [ ] Independent reviewer validates theorem mapping (incl. Prop 3.1 above).
@@ -22,17 +22,31 @@ No `sorry` or `admit` is used.
 
 ## Axiom audit (T1-C)
 
-`DyadicShells/AxiomAudit.lean` runs `#print axioms` for every named Target 1
-theorem and is imported into the build, so the axiom list is emitted in the
-GitHub Actions log of every run. Expected (and no other): `propext`,
-`Classical.choice`, `Quot.sound`. The numeric regression uses `decide`, not
-`native_decide`, so `Lean.ofReduceBool` must not appear; the "Reject proof
-holes" step confirms no `sorry`/`admit`.
+A dedicated CI step runs `lake env lean DyadicShells/AxiomAudit.lean`, which
+`#print axioms` for every named Target 1 theorem, prints the list to the build
+log, and **fails the build if `sorryAx` or `ofReduceBool` appears**. Captured
+verbatim from CI run 40660521229 (#14), step "Axiom audit":
 
-The printed list is visible in the Actions build log (step "Run
-leanprover/lean-action"). The CI log artifact is served from a storage host not
-reachable by the automated environment, so the verbatim output should be read
-from the GitHub Actions web UI and pasted here by the author/reviewer.
+| Theorem | Axioms |
+|---|---|
+| `weighted_center_decomposition` | propext, Classical.choice, Quot.sound |
+| `weighted_center_square_identity` | propext, Classical.choice, Quot.sound |
+| `weighted_center_factor_witnesses` | propext, Classical.choice, Quot.sound |
+| `square_certificate_factorization` | propext, Classical.choice, Quot.sound |
+| `square_certificate_dvd` | propext, Classical.choice, Quot.sound |
+| `gcd_factor_recovery` | propext, Classical.choice, Quot.sound |
+| `prop31_factor_recovery` | propext, Classical.choice, Quot.sound |
+| `prop31_recovered_proper` | propext, Classical.choice, Quot.sound |
+| `weighted_certificate_factorization` | propext, Classical.choice, Quot.sound |
+| `gcd_dvd_modulus` | propext |
+| `proper_divisor_criterion` | propext |
+
+Only standard Lean/Mathlib axioms appear; **no `sorryAx`, custom `axiom`, or
+`Lean.ofReduceBool`** (the numeric regression uses `decide`, not
+`native_decide`). The "Reject proof holes" step additionally confirms no
+`sorry`/`admit` in source. The step's own guard (`grep -Eq
+'sorryAx|ofReduceBool'`) would fail the build on any proof-hole or
+compiled-decision axiom; run #14 passed it.
 
 Human author: Arsen A. Khachatryan; research affiliation: SibarS Labs.
 AI-assisted drafting and formalization; scientific responsibility
