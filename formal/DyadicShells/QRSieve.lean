@@ -146,4 +146,38 @@ theorem qrPairs_count_as_character_sum
       simpa [Fintype.card_subtype, Set.toFinset_setOf] using
         (quadraticChar_card_sqrts h2 (A ^ 2 - N))
 
+/-- The precise character sum behind the sieve's null model:
+for every nonzero N in a finite field of odd characteristic,
+∑ A, χ(A²-N) = -1. -/
+theorem qr_quadratic_character_sum
+    {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+    (h2 : ringChar F ≠ 2) (N : F) (hN : N ≠ 0) :
+    (∑ A : F, quadraticChar F (A ^ 2 - N)) = -1 := by
+  classical
+  have htwo : (2 : F) ≠ 0 := by
+    intro hz
+    have hne := Ring.neg_one_ne_one_of_char_ne_two h2
+    apply hne
+    calc
+      (-1 : F) = 1 - 2 := by ring
+      _ = 1 := by rw [hz]; ring
+  have hpair : Fintype.card (qrPairs F N) =
+      Fintype.card {u : F // u ≠ 0} :=
+    Fintype.card_congr (qrPairsEquivNonzero N hN htwo)
+  have hcomplement :
+      Fintype.card {u : F // u ≠ 0} = Fintype.card F - 1 := by
+    simpa using (Fintype.card_subtype_compl (fun u : F => u = 0))
+  have hfieldNonempty : 0 < Fintype.card F :=
+    Fintype.card_pos_iff.mpr ⟨(0 : F)⟩
+  have hcard : (Fintype.card (qrPairs F N) : ℤ) =
+      (Fintype.card F : ℤ) - 1 := by
+    omega
+  have hroots := qrPairs_count_as_character_sum h2 N
+  have hexpand :
+      (∑ A : F, (quadraticChar F (A ^ 2 - N) + 1)) =
+        (∑ A : F, quadraticChar F (A ^ 2 - N)) +
+        (Fintype.card F : ℤ) := by
+    simp [Finset.sum_add_distrib]
+  omega
+
 end DyadicShells
