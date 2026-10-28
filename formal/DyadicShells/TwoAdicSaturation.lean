@@ -200,10 +200,10 @@ theorem twoAdicPass_congr {N m A B : ℕ} (h : A ≡ B [MOD 2 ^ m])
 i.e. the pass proportion `π_m(N) ≥ 2^(-(2v+3))`, uniform in `m`.
 -/
 
+open Classical in
 /-- **Proposition 4.2 (two-adic saturation).** For odd `N ≥ 3`, the number
 of residues `A < 2^m` that two-adically pass is at least `2^(m-(2v+3))`:
 `2^(2v+3) · #pass ≥ 2^m`, uniformly in `m`, where `v = v₂((N-1)/2)`. -/
-open Classical in
 theorem twoadic_saturation (N : ℕ) (hodd : Odd N) (h3 : 3 ≤ N) :
     ∃ v : ℕ, ∀ m : ℕ,
       2 ^ m ≤ 2 ^ (2 * v + 3) *
@@ -222,9 +222,10 @@ theorem twoadic_saturation (N : ℕ) (hodd : Odd N) (h3 : 3 ≤ N) :
     fun A hA => twoAdicPass_of_classN v w A m hw hA
   rcases le_or_gt m (2 * v + 3) with hmd | hmd
   · -- small m: a single witness suffices
+    have hbase : twoAdicPass (2 * (2 ^ v * w) + 1) m (2 ^ v * w + 1) :=
+      hpass (2 ^ v * w + 1) (Nat.ModEq.refl _)
     have hpA0 : twoAdicPass (2 * (2 ^ v * w) + 1) m ((2 ^ v * w + 1) % 2 ^ m) :=
-      twoAdicPass_congr (Nat.mod_modEq _ _)
-        (hpass _ (Nat.ModEq.refl _))
+      twoAdicPass_congr (Nat.mod_modEq _ _).symm hbase
     have hmem : (2 ^ v * w + 1) % 2 ^ m ∈ S := by
       rw [hS, Finset.mem_filter]
       exact ⟨Finset.mem_range.mpr (Nat.mod_lt _ (pow_pos (by norm_num) m)), hpA0⟩
