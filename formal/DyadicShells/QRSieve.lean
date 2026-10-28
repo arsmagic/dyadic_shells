@@ -180,4 +180,80 @@ theorem qr_quadratic_character_sum
     simp [Finset.sum_add_distrib]
   omega
 
+/-- The pointwise character identity underlying the inclusive (square-or-zero)
+pass criterion. No independence or random-residue assumption is used. -/
+private theorem qr_square_indicator
+    {F : Type*} [Field F] [Fintype F]
+    (z : F) :
+    (2 : ℤ) * (if IsSquare z then 1 else 0) =
+      1 + quadraticChar F z + (if z = 0 then 1 else 0) := by
+  classical
+  by_cases hz : z = 0
+  · subst z
+    have hs : IsSquare (0 : F) := ⟨0, by simp⟩
+    simp [hs, quadraticChar_zero]
+  · by_cases hs : IsSquare z
+    · have hχ : quadraticChar F z = 1 :=
+        (quadraticChar_one_iff_isSquare hz).2 hs
+      simp [hz, hs, hχ]
+    · have hχ : quadraticChar F z = -1 :=
+        quadraticChar_neg_one_iff_not_isSquare.mpr hs
+      simp [hz, hs, hχ]
+
+/-- The exact QR sieve count, in a division-free form over the integers:
+2 * #passing centers = #F + χ(N). -/
+theorem qr_exact_pass_count_double
+    {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+    (h2 : ringChar F ≠ 2) (N : F) (hN : N ≠ 0) :
+    (2 : ℤ) * (passingCenters F N).card =
+      (Fintype.card F : ℤ) + quadraticChar F N := by
+  classical
+  have hpass : ((passingCenters F N).card : ℤ) =
+      ∑ A : F, if IsSquare (A ^ 2 - N) then (1 : ℤ) else 0 := by
+    simpa [passingCenters] using
+      (Finset.natCast_card_filter (R := ℤ)
+        (fun A : F => IsSquare (A ^ 2 - N)) Finset.univ)
+  have hzero : (({A : F | A ^ 2 = N}.toFinset.card : ℤ)) =
+      ∑ A : F, if A ^ 2 = N then (1 : ℤ) else 0 := by
+    simpa [Set.toFinset_setOf] using
+      (Finset.natCast_card_filter (R := ℤ)
+        (fun A : F => A ^ 2 = N) Finset.univ)
+  have hpoint (A : F) :
+      (2 : ℤ) * (if IsSquare (A ^ 2 - N) then 1 else 0) =
+        1 + quadraticChar F (A ^ 2 - N) +
+          (if A ^ 2 = N then 1 else 0) := by
+    simpa only [sub_eq_zero] using (qr_square_indicator (A ^ 2 - N))
+  have hchar := qr_quadratic_character_sum h2 N hN
+  have hroot := qr_zero_center_count h2 N
+  calc
+    (2 : ℤ) * (passingCenters F N).card =
+        2 * (∑ A : F, if IsSquare (A ^ 2 - N) then (1 : ℤ) else 0) := by
+          rw [hpass]
+    _ = ∑ A : F, (2 : ℤ) *
+        (if IsSquare (A ^ 2 - N) then 1 else 0) := by
+          rw [Finset.mul_sum]
+    _ = ∑ A : F, ((1 : ℤ) + quadraticChar F (A ^ 2 - N) +
+          (if A ^ 2 = N then 1 else 0)) := by
+          apply Finset.sum_congr rfl
+          intro A _
+          exact hpoint A
+    _ = (Fintype.card F : ℤ) +
+          (∑ A : F, quadraticChar F (A ^ 2 - N)) +
+          (∑ A : F, if A ^ 2 = N then (1 : ℤ) else 0) := by
+          simp [Finset.sum_add_distrib]
+    _ = (Fintype.card F : ℤ) + (-1) +
+          (quadraticChar F N + 1) := by
+          rw [hchar, ← hzero, hroot]
+    _ = (Fintype.card F : ℤ) + quadraticChar F N := by ring
+
+/-- Proposition 4.1, exact inclusive square-or-zero passing count,
+valid for *every* nonzero N in any finite field of odd characteristic. -/
+theorem qr_exact_pass_count
+    {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+    (h2 : ringChar F ≠ 2) (N : F) (hN : N ≠ 0) :
+    ((passingCenters F N).card : ℤ) =
+      ((Fintype.card F : ℤ) + quadraticChar F N) / 2 := by
+  have hd := qr_exact_pass_count_double h2 N hN
+  omega
+
 end DyadicShells
