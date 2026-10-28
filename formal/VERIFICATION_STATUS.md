@@ -52,7 +52,11 @@ Source and diagnostics: [Lean workflow](https://github.com/arsmagic/dyadic_shell
 
 ## Remaining research targets
 
-- [ ] **Target 2** — full Proposition 4.1: exact odd-prime QR sieve pass count.
+- [ ] **Target 2** — Proposition 4.1 exact QR count: complete Lean
+      proof candidate in [PR #3](https://github.com/arsmagic/dyadic_shells/pull/3)
+      (conic bijection, character sum, inclusive pass count); **pending
+      successful CI** on the latest branch head, including the axiom audit.
+      This is not yet a verified result.
 - [ ] **Target 3** — full Proposition 4.2: uniform two-adic saturation bound.
 - [ ] Author approval for any **new DOI or external manuscript**.
 
