@@ -20,12 +20,22 @@ jobs:
         working-directory: formal
     steps:
       - uses: actions/checkout@v4
+      # lean-action requires a lockfile before its configure step.  The initial
+      # PR intentionally did not vendor a generated manifest, so bootstrap the
+      # pinned toolchain and create one before invoking lean-action.
+      - name: Bootstrap pinned Lean toolchain and Lake manifest
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          "$HOME/.elan/bin/lake" update
+          test -s lake-manifest.json
       - uses: leanprover/lean-action@v1
         with:
           lake-package-directory: formal
           use-mathlib-cache: true
           build: true
           test: false
+          lint: false
       - name: Reject proof holes
         run: |
           if grep -R -n -E '(^|[^[:alpha:]])(sorry|admit)([^[:alpha:]]|$)' DyadicShells --include='*.lean'; then
