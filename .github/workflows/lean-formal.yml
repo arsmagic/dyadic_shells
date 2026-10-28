@@ -5,12 +5,7 @@ on:
     paths:
       - "formal/**"
       - ".github/workflows/lean-formal.yml"
-  push:
-    branches:
-      - formal/lean-verification
-    paths:
-      - "formal/**"
-      - ".github/workflows/lean-formal.yml"
+  workflow_dispatch:
 
 jobs:
   build:
