@@ -42,6 +42,6 @@ theorem exact_square_witness_passes
     A ∈ passingCenters F N := by
   classical
   simp only [passingCenters, Finset.mem_filter, Finset.mem_univ, true_and]
-  exact ⟨y, by simpa [pow_two] using h.symm⟩
+  exact ⟨y, by simpa [pow_two] using h⟩
 
 end DyadicShells
