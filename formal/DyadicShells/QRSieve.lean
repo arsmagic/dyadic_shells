@@ -1,16 +1,18 @@
 import Mathlib
 
 /-!
-# Quadratic-residue sieve: factorization identity and soundness
+# Quadratic-residue sieve: exact finite-field counting (Target 2)
 
 Source: Khachatryan v11.0.3, Proposition 4.1, and v11.5.17.
 
-We prove the exact algebraic equivalence underlying sieve certificates
-and that any exact-square witness passes a finite-field square sieve.
+This module contains a complete *candidate* Lean proof of the exact
+square-or-zero sieve pass fraction, using the difference-of-squares
+conic parametrization, the quadratic character, and a pointwise indicator
+identity. The final claim is `qr_exact_pass_count` below.
 
-**Not yet proved here**: for odd prime ℓ and ℓ ∤ N the exact count
-  # {A : ZMod ℓ | IsSquare (A² - N)} = (ℓ + χℓ(N)) / 2.
-This requires a finite-field cardinality proof; see THEOREM_MAPPING.md.
+This is mathematically stronger than the prime-field statement in the
+preprint, but MUST NOT be called machine-verified until the latest GitHub
+Actions run completes successfully (see THEOREM_MAPPING.md).
 -/
 
 namespace DyadicShells
@@ -47,10 +49,10 @@ theorem exact_square_witness_passes
 /-!
 ## Target 2: exact finite-field counts
 
-The exact pass count is **not** proved yet. The next lemmas build its
-two independent counting ingredients: the zero-center count (via
-`quadraticChar_card_sqrts`) and a bijection between
-`A²-y²=N` solution pairs and the nonzero elements of a field.
+The counting proof has two independent inputs: the zero-center
+count (via Mathlib's `quadraticChar_card_sqrts`) and an explicit bijection
+between `A²-y²=N` solution pairs and nonzero field elements.
+The derived character sum is -1, leading to the exact count in integers.
 -/
 
 open Finset
