@@ -1,4 +1,5 @@
 import DyadicShells.Soundness
+import DyadicShells.QRSieve
 
 /-!
 # Axiom audit (Target 1)
@@ -24,3 +25,10 @@ red flag; none are present here.
 #print axioms DyadicShells.gcd_dvd_modulus
 #print axioms DyadicShells.proper_divisor_criterion
 #print axioms DyadicShells.proper_divisor_criterion_either_sign
+
+/-! ## Target 2: exact quadratic-residue sieve count -/
+#print axioms DyadicShells.qr_zero_center_count
+#print axioms DyadicShells.qrPairs_count_as_character_sum
+#print axioms DyadicShells.qr_quadratic_character_sum
+#print axioms DyadicShells.qr_exact_pass_count_double
+#print axioms DyadicShells.qr_exact_pass_count
