@@ -74,9 +74,24 @@ For odd prime ℓ not dividing N,
 - `square_test_iff_factor_pair` gives the `(A−y)(A+y)=N` identity.
 - `exact_square_witness_passes` establishes finite-field sieve soundness.
 
-**Open:** exact finite-field character sum / pair-count proof, and exact
-cardinality in terms of quadratic character. The statement itself is
-not yet encoded as a theorem.
+**Current draft in PR #3 (independently authored):**
+- `qrPairsEquivNonzero`: explicit equivalence between the conic
+  `A²-y²=N` and nonzero field elements for `N≠0` and characteristic ≠2.
+- `qrPairsEquivSigma`: reindex pairs by their first coordinate.
+- `qr_zero_center_count`: #solutions of `A²=N` from Mathlib's
+  `quadraticChar_card_sqrts`.
+- `qrPairs_count_as_character_sum` and `qr_quadratic_character_sum`:
+  the exact character-sum identity `∑ₐ χ(A²-N)=-1`.
+- `qr_exact_pass_count_double` and `qr_exact_pass_count`:
+  the exact count `2·#pass = #F+χ(N)` and
+  `#pass=(#F+χ(N))/2` for any finite field with odd characteristic
+  and `N≠0`. The passing predicate includes zero.
+
+**Status:** complete proof *candidate*, pending successful CI on the
+latest PR #3 head. No claim of Lean-verified completion until GitHub
+Actions reports success. No equidistribution, independent-filter or
+probabilistic hypotheses are introduced. The generic finite-field
+form is stronger than the source's prime-field case.
 
 ## 3. Two-adic saturation
 
