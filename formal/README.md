@@ -1,49 +1,57 @@
-# Dyadic Shells: Lean 4 formalization (work in progress)
+# Dyadic Shells — Lean 4 formalization
 
-**Mathematical author:** Arsen A. Khachatryan (ORCID 0009-0006-7629-3833)  
-**Affiliation:** SibarS Labs  
-**Status:** Target 1 (soundness & factor recovery) is **Lean-proved in CI**
-(Lean 4.24.0 / Mathlib v4.24.0, green run #14 = `40660521229`, no proof holes;
-axioms audited in CI — only `propext`, `Classical.choice`, `Quot.sound`). Targets 2 & 3 are **not yet proved**. Full-proposition
-equivalence-to-prose review by the author/reviewer is still pending.
+**Research author:** Arsen A. Khachatryan (SibarS Labs; ORCID 0009-0006-7629-3833).
 
-Source publications:
-- Anchored Sparse-Offset Screening of Semiprimes, v11.5.17, https://doi.org/10.5281/zenodo.23432486
-- v11.0.3, https://doi.org/10.5281/zenodo.23135512
+**Status:** **Target 1 (Proposition 3.1: soundness and factor recovery) is
+Lean-proved.** Its source-to-code correspondence has been checked against
+the published v11.0.3, page 3, including the converse for both signs.
+An external human referee review has **not** been performed.
+**Targets 2 and 3 remain open.**
 
-The three original targets are:
-1. Weighted center identity, factor soundness and gcd recovery.
-2. Exact quadratic-residue passing fraction over odd prime fields.
-3. Uniform lower bound for two-adic passing density.
+- [v11.0.3](https://doi.org/10.5281/zenodo.23135512), Proposition 3.1
+  (published source for Target 1), Propositions 4.1 and 4.2 (next targets).
+- [v11.5.17](https://doi.org/10.5281/zenodo.23432486) (later extended framework).
+- [Detailed theorem mapping](./THEOREM_MAPPING.md).
+- [Verification ledger](./VERIFICATION_STATUS.md).
+- [Lean CI](https://github.com/arsmagic/dyadic_shells/actions/workflows/lean-formal.yml).
 
-Target 1 is now proved (weighted identity, arbitrary-certificate soundness,
-exact gcd factor recovery, the published-hypotheses corollary with derived
-cross-coprimality and proper-factor nontriviality, and the weighted-certificate
-acceptance criterion with a regression showing an exact weighted square need not
-factor `n`). Targets 2 and 3 still have only the square-pair/soundness lemmas and
-a witness-existence lemma respectively; they **do not yet constitute full formal
-proofs**. See `THEOREM_MAPPING.md` and `VERIFICATION_STATUS.md` for exact gaps
-and the axiom audit.
+## What Target 1 proves
 
-## Build
+`DyadicShells/Soundness.lean` proves the weighted square identity,
+conditional recovery of `p,q` by exact gcd, and the published
+prime-and-multiplier-bound corollary (with derived coprimality and
+`t` constructed from `A`). The certificate converse checks both signs
+and requires `1 < gcd(A ± t,n) < |n|` to claim a proper divisor.
+A regression illustrates why an arbitrary `A²-k*n=t²` does not
+automatically reveal factors of `n`.
 
-Install Lean toolchain using [elan](https://github.com/leanprover/elan).
-From the `formal/` directory:
+The Lean corollary is more general than the publication in some hypotheses;
+the published anchored and coprime-odd cases specialize it.
+This verifies **the mathematics encoded in these theorems**, not
+algorithmic complexity, scientific novelty, or practical RSA weakness.
+
+## Reproduction
+
+Install [elan](https://github.com/leanprover/elan) and run from
+`formal/`:
 
 ```sh
 lake update
 lake exe cache get
 lake build
-grep -R -n -E '\\b(sorry|admit)\\b' DyadicShells || true
+lake env lean DyadicShells/AxiomAudit.lean
 ```
 
-CI builds using a pinned Lean/mathlib release. A green build confirms only
-the **lemmas present in the files**, not the unimplemented full statements.
-No experimental scaling, algorithmic complexity or claimed novelty is verified.
+The CI workflow runs on changes to `formal/**` in pull requests and
+on pushes to `main`, and checks for proof holes.
+Lean and Mathlib are pinned to v4.24.0.
 
-## Research ethics and attribution
+## Next targets
 
-These files are a formalization attempt prepared using AI assistance at the
-user's direction; all mathematical claims and code require independent checking.
-No new DOI is assigned and no public scientific claim of full Lean verification
-should be made until the exact original statements are implemented and built.
+1. **Target 2:** exact quadratic-residue sieve fraction
+   (Proposition 4.1), currently only elementary soundness lemmas.
+2. **Target 3:** uniform two-adic density
+   (Proposition 4.2), currently only existence of a square witness.
+
+No new Zenodo DOI has been assigned for these formalization files.
+AI assistance is disclosed; independent human peer review remains recommended.

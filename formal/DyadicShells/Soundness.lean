@@ -150,12 +150,8 @@ theorem prop31_recovered_proper
   have hpp := hp.pos
   have hqp := hq.pos
   refine ⟨hp1, ?_, hq1, ?_⟩
-  · first
-      | exact (Nat.lt_mul_iff_one_lt_right hpp).mpr hq1
-      | nlinarith [hp1, hq1, hpp, hqp]
-  · first
-      | exact (Nat.lt_mul_iff_one_lt_left hqp).mpr hp1
-      | nlinarith [hp1, hq1, hpp, hqp]
+  · exact (Nat.lt_mul_iff_one_lt_right hpp).mpr hq1
+  · exact (Nat.lt_mul_iff_one_lt_left hqp).mpr hp1
 
 /-!
 ## Target 1-B — general weighted certificates: soundness vs. recovery
@@ -186,6 +182,21 @@ theorem proper_divisor_criterion (A t n : ℤ)
     Int.gcd (A + t) n ∣ n.natAbs ∧ 1 < Int.gcd (A + t) n ∧
       Int.gcd (A + t) n < n.natAbs :=
   ⟨gcd_dvd_modulus A t n, h1, h2⟩
+
+/-- Source Proposition 3.1, converse for **either** sign: every
+cofactor gcd strictly between 1 and |n| is a proper divisor of |n|.
+This implication holds regardless of how A and t were obtained. -/
+theorem proper_divisor_criterion_either_sign (A t n : ℤ) (d : ℕ)
+    (hside : d = Int.gcd (A + t) n ∨ d = Int.gcd (A - t) n)
+    (hlo : 1 < d) (hhi : d < n.natAbs) :
+    d ∣ n.natAbs ∧ 1 < d ∧ d < n.natAbs := by
+  have hdvd : d ∣ n.natAbs := by
+    rcases hside with hplus | hminus
+    · rw [hplus]
+      exact gcd_dvd_modulus A t n
+    · rw [hminus]
+      simpa [sub_eq_add_neg] using (gcd_dvd_modulus A (-t) n)
+  exact ⟨hdvd, hlo, hhi⟩
 
 /-- Regression (source handoff): an exact *weighted* square certificate need not
 yield a proper factor. For `n = 35, k = 3, A = 53, t = 52` the identity holds
