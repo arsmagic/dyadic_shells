@@ -190,7 +190,7 @@ theorem qr_quadratic_character_sum
 /-- The pointwise character identity underlying the inclusive (square-or-zero)
 pass criterion. No independence or random-residue assumption is used. -/
 private theorem qr_square_indicator
-    {F : Type*} [Field F] [Fintype F]
+    {F : Type*} [Field F] [Fintype F] [DecidableEq F]
     (z : F) :
     (2 : ℤ) * (if IsSquare z then 1 else 0) =
       1 + quadraticChar F z + (if z = 0 then 1 else 0) := by
