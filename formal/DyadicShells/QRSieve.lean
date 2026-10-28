@@ -117,4 +117,33 @@ theorem qr_zero_center_count
   classical
   exact quadraticChar_card_sqrts h2 N
 
+/-- Reindex the equation A²-y²=N by its first coordinate. -/
+def qrPairsEquivSigma
+    {F : Type*} [Field F] (N : F) :
+    qrPairs F N ≃ (Σ A : F, {y : F // y ^ 2 = A ^ 2 - N}) where
+  toFun v := ⟨v.1.1, ⟨v.1.2, by linear_combination -v.2⟩⟩
+  invFun v := ⟨(v.1, v.2.1), by linear_combination -v.2.2⟩
+  left_inv v := rfl
+  right_inv v := rfl
+
+/-- Summing the root-count formula over the centers. -/
+theorem qrPairs_count_as_character_sum
+    {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+    (h2 : ringChar F ≠ 2) (N : F) :
+    (Fintype.card (qrPairs F N) : ℤ) =
+      ∑ A : F, (quadraticChar F (A ^ 2 - N) + 1) := by
+  classical
+  have hc : Fintype.card (qrPairs F N) =
+      ∑ A : F, Fintype.card {y : F // y ^ 2 = A ^ 2 - N} := by
+    rw [Fintype.card_congr (qrPairsEquivSigma N), Fintype.card_sigma]
+  calc
+    (Fintype.card (qrPairs F N) : ℤ) =
+        ∑ A : F, (Fintype.card {y : F // y ^ 2 = A ^ 2 - N} : ℤ) := by
+          exact_mod_cast hc
+    _ = ∑ A : F, (quadraticChar F (A ^ 2 - N) + 1) := by
+      apply Finset.sum_congr rfl
+      intro A _
+      simpa [Fintype.card_subtype, Set.toFinset_setOf] using
+        (quadraticChar_card_sqrts h2 (A ^ 2 - N))
+
 end DyadicShells
