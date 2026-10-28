@@ -31,6 +31,15 @@ jobs:
           build: true
           test: false
           lint: false
+      - name: Axiom audit
+        run: |
+          set -o pipefail
+          echo "=== #print axioms (DyadicShells/AxiomAudit.lean) ==="
+          lake env lean DyadicShells/AxiomAudit.lean 2>&1 | tee axiom-audit.txt
+          if grep -Eq 'sorryAx|ofReduceBool' axiom-audit.txt; then
+            echo "Unexpected axiom (sorryAx / ofReduceBool) detected"; exit 1
+          fi
+          echo "Axiom audit OK: only standard axioms."
       - name: Reject proof holes
         run: |
           if grep -R -n -E '(^|[^[:alpha:]])(sorry|admit)([^[:alpha:]]|$)' DyadicShells --include='*.lean'; then
