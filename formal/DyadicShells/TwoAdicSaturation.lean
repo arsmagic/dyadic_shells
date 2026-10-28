@@ -145,4 +145,46 @@ theorem class_passesZ (v : ℕ) (w : ℤ) (hw : Odd w) (A : ℤ)
     rw [hM]
     linear_combination (-1 : ℤ) * hANc + (-(2 ^ v) ^ 2 : ℤ) * ht
 
+/-!
+**Milestone C** (this commit, part 1): bridge the integer core to the
+natural-number pass predicate `twoAdicPass`, and specialize to an odd `N`
+via its `2`-adic decomposition `(N-1)/2 = 2^v · w` with `w` odd.
+-/
+
+/-- An integer square certificate modulo `2^m` yields a `twoAdicPass`
+witness (a natural-number square root taken modulo `2^m`). -/
+theorem twoAdicPass_of_intWitness {N m A : ℕ}
+    (h : ∃ Y : ℤ, (A : ℤ) ^ 2 ≡ (N : ℤ) + Y ^ 2 [ZMOD 2 ^ m]) :
+    twoAdicPass N m A := by
+  obtain ⟨Y, hY⟩ := h
+  have hpos : (0 : ℤ) < 2 ^ m := pow_pos (by norm_num) m
+  refine ⟨(Y % 2 ^ m).toNat, ?_⟩
+  have hynn : ((Y % 2 ^ m).toNat : ℤ) = Y % 2 ^ m :=
+    Int.toNat_of_nonneg (Int.emod_nonneg Y hpos.ne')
+  have hyY : ((Y % 2 ^ m).toNat : ℤ) ≡ Y [ZMOD 2 ^ m] := by
+    rw [hynn, Int.modEq_iff_dvd]
+    exact ⟨Y / 2 ^ m, by rw [Int.emod_def]; ring⟩
+  have key : (A : ℤ) ^ 2 ≡ (N : ℤ) + ((Y % 2 ^ m).toNat : ℤ) ^ 2 [ZMOD 2 ^ m] :=
+    hY.trans ((hyY.pow 2).symm.add_left (N : ℤ))
+  rw [Nat.modEq_iff_dvd]
+  have hd := Int.modEq_iff_dvd.mp key
+  push_cast
+  push_cast at hd
+  exact hd
+
+/-- Specialization to a natural odd `N` written as `N = 2·(2^v·w) + 1`
+with `w` odd: every `A` in the class `A ≡ 2^v·w + 1 (mod 2^(2v+3))` passes
+at every level `m`. -/
+theorem twoAdicPass_of_classN (v w A m : ℕ) (hw : Odd w)
+    (hA : A ≡ 2 ^ v * w + 1 [MOD 2 ^ (2 * v + 3)]) :
+    twoAdicPass (2 * (2 ^ v * w) + 1) m A := by
+  have hwZ : Odd (w : ℤ) := by exact_mod_cast hw
+  have hAZ : (A : ℤ) ≡ 2 ^ v * w + 1 [ZMOD 2 ^ (2 * v + 3)] := by
+    rw [Int.modEq_iff_dvd]
+    have hnat := Nat.modEq_iff_dvd.mp hA
+    push_cast at hnat ⊢
+    exact hnat
+  obtain ⟨Y, hY⟩ := class_passesZ v (w : ℤ) hwZ (A : ℤ) hAZ m
+  exact twoAdicPass_of_intWitness ⟨Y, by push_cast; exact hY⟩
+
 end DyadicShells
