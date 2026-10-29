@@ -1,6 +1,7 @@
 import DyadicShells.Soundness
 import DyadicShells.QRSieve
 import DyadicShells.TwoAdicSaturation
+import DyadicShells.PR2FullIff
 
 /-!
 # Axiom audit (Target 1)
@@ -43,3 +44,7 @@ red flag; none are present here.
 #print axioms DyadicShells.twoAdicPass_of_classN
 #print axioms DyadicShells.twoAdicPass_congr
 #print axioms DyadicShells.twoadic_saturation
+
+/-! ## PR2 full iff candidate (sandbox only; not on `main`) -/
+#print axioms DyadicShells.PR2FullIff.isSquare_zmod_two_pow_iff_of_odd
+#print axioms DyadicShells.PR2FullIff.isSquare_zmod_two_pow_iff_of_odd_three_le
