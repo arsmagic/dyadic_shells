@@ -152,4 +152,31 @@ theorem isSquare_zmod_two_pow_iff_of_odd_three_le
   rw [isSquare_zmod_two_pow_iff_of_odd a n ha, min_eq_right hn,
     show (2 : ℤ) ^ 3 = 8 by norm_num]
 
+/-! ## WP5: axiom audit and edge-case tests -/
+
+-- Axiom audit (printed to the build log): expect only
+-- [propext, Classical.choice, Quot.sound]; no sorryAx / ofReduceBool.
+#print axioms isSquare_zmod_two_pow_iff_of_odd
+#print axioms isSquare_zmod_two_pow_iff_of_odd_three_le
+
+-- Edge-case tests. These exercise the theorem (and independently `decide` the
+-- finite-ring squareness) at n = 2,3,4,5, including a negative odd input.
+-- `decide` is kernel-checked (no `native_decide`, so no `ofReduceBool`).
+example : IsSquare ((17 : ℤ) : ZMod (2 ^ 5)) :=
+  (isSquare_zmod_two_pow_iff_of_odd 17 5 (by decide)).mpr (by decide)
+
+example : ¬ IsSquare ((3 : ℤ) : ZMod (2 ^ 5)) := by
+  rw [isSquare_zmod_two_pow_iff_of_odd 3 5 (by decide)]; decide
+
+example : IsSquare ((-7 : ℤ) : ZMod (2 ^ 4)) :=
+  (isSquare_zmod_two_pow_iff_of_odd_three_le (-7) (by norm_num) (by decide)).mpr
+    (by decide)
+
+-- n = 3 boundary via the specialization, and small-modulus boundaries n = 1,2.
+example : IsSquare ((9 : ℤ) : ZMod (2 ^ 3)) := by decide
+example : ¬ IsSquare ((5 : ℤ) : ZMod (2 ^ 3)) := by decide
+example : IsSquare ((5 : ℤ) : ZMod (2 ^ 2)) := by decide
+example : ¬ IsSquare ((3 : ℤ) : ZMod (2 ^ 2)) := by decide
+example : IsSquare ((1 : ℤ) : ZMod (2 ^ 1)) := by decide
+
 end DyadicShells.PR2FullIff
