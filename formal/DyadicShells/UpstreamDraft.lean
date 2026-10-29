@@ -59,7 +59,7 @@ theorem quadraticChar_sum_quadratic
       = quadraticChar F a
           * ∑ x : F, quadraticChar F (x ^ 2 - (-(c - b ^ 2 / (4 * a)) / a)) := by
     rw [Finset.mul_sum]
-    exact Finset.sum_congr rfl (fun x _ => by rw [hfac x, quadraticChar_mul])
+    exact Finset.sum_congr rfl (fun x _ => by rw [hfac x, map_mul])
   have hNne : (-(c - b ^ 2 / (4 * a)) / a) ≠ 0 := div_ne_zero (neg_ne_zero.mpr hD) ha
   rw [hre, hsplit, qr_quadratic_character_sum h2 _ hNne]
   ring
@@ -68,7 +68,7 @@ theorem quadraticChar_sum_quadratic
 is a square in `ZMod (2^n)`, for every `n`. -/
 theorem isSquare_zmod_two_pow_of_mod_eight {n : ℕ} {a : ℤ} (ha : a % 8 = 1) :
     IsSquare (a : ZMod (2 ^ n)) := by
-  have hc : a ≡ 1 [ZMOD 8] := by show a % 8 = 1 % 8; rw [ha]
+  have hc : a ≡ 1 [ZMOD 8] := by show a % 8 = 1 % 8; omega
   obtain ⟨y, hy⟩ := isSquare_mod_two_pow_of_one_mod_eight a hc n
   refine ⟨(y : ZMod (2 ^ n)), ?_⟩
   have hmod : a ≡ y ^ 2 [ZMOD ((2 ^ n : ℕ) : ℤ)] := by push_cast; exact hy.symm
