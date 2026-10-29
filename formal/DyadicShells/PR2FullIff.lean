@@ -129,7 +129,7 @@ theorem isSquare_zmod_two_pow_iff_of_odd (a : ℤ) (n : ℕ) (ha : Odd a) :
       have h1 : (a : ZMod (2 ^ n)) = 1 := by
         have := (ZMod.intCast_eq_intCast_iff a 1 (2 ^ n)).mpr hcong'
         simpa using this
-      rw [h1]; exact isSquare_one
+      rw [h1]; exact ⟨1, by ring⟩
     · have hmin : min n 3 = 3 := min_eq_right hn
       rw [hmin] at hcong
       have h8 : a ≡ 1 [ZMOD 8] := by
