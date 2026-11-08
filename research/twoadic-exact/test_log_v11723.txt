@@ -1,0 +1,26 @@
+verify_v11723.py sha256: 64468db6ad35a7451cd9e300d1904c6edd976df770317a51e6bc43dd4aa9b95f
+Python 3.13.16
+
+T1  Theorem 1 closed forms, odd N in [-259,259], m=1..14: 3640/3640
+T2  24*C_m(N) > 2^m, same range: 3640/3640
+T3  C_m(N) = C_m(N mod 8), same range: 3640/3640
+T4  E_k by direct enumeration (k=1..7): OK got=[1, 1, 2, 2, 3, 4, 7] want=[1, 1, 2, 2, 3, 4, 7]
+    E_k = s(k-2) for k=2..7: 6/6
+    C_m(1) = 4 E_(m-2) for m=3..14: 12/12
+T5  s(n) direct = (2^n+9-(-1)^n)/6, n=0..16: 17/17
+T6  |L_(N,2^e,k)| = C_e(kN)/2, e=1..11: 11440/11440
+T7  recursion, exponent e mod 2: 72/72
+    recursion, exponent (e+1) mod 2 (as printed in arXiv v1): 0/72
+    explicit |L_(1,2^e,1)|, e=5..8 (L6=2(L5-2), L7=2(L6-1), L8=2(L7-2)): OK got=[4, 4, 6, 8] want=[4, 4, 6, 8]
+T8  Hittmeir Example 4.7, |L_(N,2^e,1)|, e=4..10: OK got=[2, 4, 4, 6, 8, 14, 24] want=[2, 4, 4, 6, 8, 14, 24]
+T9  odd prime powers r<=13, r^(e+1)<=30000, exponent e mod 2: 983/983
+    same steps, exponent (e+1) mod 2 (as printed in arXiv v1): 0/983
+    Hittmeir Example 4.7, r=7, chi=+1 (N=2): |L_(N,7^e,1)|, e=1..3: OK got=[4, 16, 106] want=[4, 16, 106]
+T10 v_l(K)=1: count = l^e - l^(e-1), l in {3,5,7}, n<30, e>=2, l^e<=200000: 345/345
+T11 example l=3, K=9: counts e=1..6: OK got=[3, 9, 24, 60, 174, 510] want=[3, 9, 24, 60, 174, 510]
+T12 u -> u(1+2^j u) permutes odd residues mod 2^sigma, j=2..10 even, sigma=1..3: 15/15
+T13 halving lemma, n=2..14, all x mod 2^n: 32764/32764
+T14 square criterion (Lemma 5) vs direct squares, n=1..14: 32766/32766
+
+ALL TESTS PASSED
+exit=0

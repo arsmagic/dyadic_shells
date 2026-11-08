@@ -15,7 +15,7 @@ Zenodo record and lists all archived files, and — where available — commits 
 ## Versions
 
 The concept DOI **[10.5281/zenodo.20306132](https://doi.org/10.5281/zenodo.20306132)** always resolves to the newest
-version. The nine releases of the cycle:
+version. The ten releases of the cycle:
 
 | Version | Date | Record (version DOI) | Folder | Topic |
 |---|---|---|---|---|
@@ -27,9 +27,10 @@ version. The nine releases of the cycle:
 | **9.2.2** | 2026-06-28 | [10.5281/zenodo.20999427](https://doi.org/10.5281/zenodo.20999427) | [versions/v09.2.2](./versions/v09.2.2) | Base-shell diagnostics for congruences of squares |
 | **10.5.1** | 2026-08-22 | [10.5281/zenodo.22055615](https://doi.org/10.5281/zenodo.22055615) | [versions/v10.5.1](./versions/v10.5.1) | Center-compressible semiprimes; benchmarks |
 | **11.0.3** | 2026-10-04 | [10.5281/zenodo.23135512](https://doi.org/10.5281/zenodo.23135512) | [versions/v11.0.3](./versions/v11.0.3) | Anchored sparse-offset screening; exact sieve null model |
-| **11.5.17** | 2026-10-17 | [10.5281/zenodo.23432486](https://doi.org/10.5281/zenodo.23432486) | [versions/v11.5.17](./versions/v11.5.17) | **Latest** — FP-MITM beyond the lattice; cost-model auditor |
+| **11.5.17** | 2026-10-17 | [10.5281/zenodo.23432486](https://doi.org/10.5281/zenodo.23432486) | [versions/v11.5.17](./versions/v11.5.17) | FP-MITM beyond the lattice; cost-model auditor |
+| **11.7.23** | 2026-11-08 | [10.5281/zenodo.24051028](https://doi.org/10.5281/zenodo.24051028) | [versions/v11.7.23](./versions/v11.7.23) | **Latest** — exact two-adic counts; hyperbolic sieve modulo 2^e |
 
-All nine records are cross-linked on Zenodo (`continues` / `isContinuedBy`) so a reader can walk the series in either
+All ten records are cross-linked on Zenodo (`continues` / `isContinuedBy`) so a reader can walk the series in either
 direction from any entry point.
 
 ## Repository layout
@@ -38,7 +39,7 @@ direction from any entry point.
 README.md                 this index
 CITATION.cff              cite the series (concept DOI = always latest)
 versions/
-  v04.0/ … v11.5.17/       one folder per release
+  v04.0/ … v11.7.23/       one folder per release
     README.md             version metadata, DOI, and links to every file on Zenodo
     src/                  accompanying source code (where committed)
 Test logs/                heavy v11-era diagnostic test logs (reference)
@@ -47,7 +48,7 @@ Test logs/                heavy v11-era diagnostic test logs (reference)
 ## Code availability
 
 The source code and data for each version are permanently archived on its Zenodo record and linked from that
-version's `README.md`. Code committed directly in this repository: **v4.0, v5.10.18, v9.2.2, v10.5.1, v11.0.3, v11.5.17**
+version's `README.md`. Code committed directly in this repository: **v4.0, v5.10.18, v9.2.2, v10.5.1, v11.0.3, v11.5.17, v11.7.23**
 (under their `src/` folders). **v6.5.7** and **v8.5.5** are theory papers with no accompanying code; **v7.1.5**'s
 code is linked on its Zenodo record. Every version's files remain archived and linked on its Zenodo record.
 
