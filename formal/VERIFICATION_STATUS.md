@@ -125,6 +125,24 @@ only on `propext`), with no `sorryAx` or `Lean.ofReduceBool`;
 `sorry`/`admit` are rejected in the same run. The proof is purely
 arithmetic/Hensel: no equidistribution or probabilistic hypothesis.
 
+## Target 4: Exact two-adic pass counts (milestone A)
+
+**Mathematical status: milestone A Lean-proved; closed forms pending.**
+Manuscript draft (not yet public): exact `C_m(N) = #{A mod 2^m : A²-N square}`
+for every odd `N` and `m`, the sharp uniform bound `π_m(N) > 1/24`, and
+`|L_{N,2^e,k}| = C_e(kN)/2` for Hittmeir's hyperbolic sieve sets.
+
+- [x] Unit-square invariance `passCard_unit_sq_mul` (any `ZMod n`):
+`#{A : A²-u²N square} = #{A : A²-N square}` for a unit `u`.
+- [x] Reduction to `N mod 8` `passCard_eq_of_modEq_eight`: odd `N ≡ N' (mod 8)`
+have equal pass counts modulo every `2^m`.
+- [x] Lean 4.24.0 and pinned Mathlib v4.24.0: successful CI build and axiom audit
+([run #42462026945](https://github.com/arsmagic/dyadic_shells/actions/runs/42462026945),
+branch `formal/target4-twoadic-exact`); axioms only `propext`, `Classical.choice`,
+`Quot.sound`.
+- [ ] Milestone B: closed forms for the representatives `N = 1, 3, 5, 7`.
+- [ ] Milestone C: `|L_{N,2^e,k}| = C_e(kN)/2`.
+
 ## Remaining research targets
 
 - [ ] Author approval for any **new DOI or external manuscript**.

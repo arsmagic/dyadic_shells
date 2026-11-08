@@ -1,4 +1,5 @@
 import DyadicShells.Soundness
 import DyadicShells.QRSieve
 import DyadicShells.TwoAdicSaturation
+import DyadicShells.TwoAdicExact
 import DyadicShells.AxiomAudit
