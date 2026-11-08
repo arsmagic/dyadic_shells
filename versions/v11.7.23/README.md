@@ -18,9 +18,8 @@ hyperbolic sieve modulo powers of two. Version 11.5.17 is not modified.
 
 ## Code in this folder
 
-The source package archived with this version is committed here under [`src/`](./src), byte-for-byte as published on
-Zenodo: LaTeX source, `verify_v11723.py` (finite-range tests; `python3 verify_v11723.py`, exit status 0 iff all
-checks pass), its log, and a copy of `TwoAdicExact.lean` (the maintained Lean file is
+Committed here under [`src/`](./src): `verify_v11723.py` (finite-range tests; `python3 verify_v11723.py`, exit
+status 0 iff all checks pass), its log, the package README and a copy of `TwoAdicExact.lean` (the maintained Lean file is
 [`formal/DyadicShells/TwoAdicExact.lean`](../../formal/DyadicShells/TwoAdicExact.lean)).
 
 ## Files archived on Zenodo
