@@ -24,4 +24,4 @@ Checks:
 }
 ```
 
-The full decimal values are in `exact_1024_sparse_center_certificate.json` and the LaTeX appendix snippet is in `exact_1024_sparse_center_certificate.tex`.
+The full decimal values are in `exact_1024_sparse_center_certificate.json` (LaTeX snippets are not distributed in this repository).

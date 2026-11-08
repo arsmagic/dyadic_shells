@@ -3,3 +3,13 @@ __pycache__/
 .DS_Store
 *.egg-info/
 .ipynb_checkpoints/
+
+# LaTeX sources are never published in this repository
+*.tex
+*.bib
+*.bbl
+*.sty
+*.cls
+*.aux
+*.toc
+*.synctex.gz

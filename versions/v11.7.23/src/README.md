@@ -22,7 +22,7 @@ Version 11.5.17 is not modified by this version. No new general-purpose factorin
 ## Files
 
 - `Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23.pdf` — the preprint.
-- `Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23_source_package.zip` — LaTeX source; `verify_v11723.py` (pure Python 3, finite-range tests,
+- `Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23_source_package.zip` — `verify_v11723.py` (pure Python 3, finite-range tests,
   exit status 0 iff all checks pass) and its output `test_log_v11723.txt`; the Lean file `TwoAdicExact.lean`.
 
 ## Reproducibility

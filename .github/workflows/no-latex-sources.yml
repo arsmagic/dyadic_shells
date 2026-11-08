@@ -1,0 +1,19 @@
+name: No LaTeX sources
+
+# LaTeX sources (.tex, .bib, .sty, .cls, .bbl) must never be published in this repository.
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject tracked LaTeX sources
+        run: |
+          files=$(git ls-files '*.tex' '*.bib' '*.sty' '*.cls' '*.bbl')
+          if [ -n "$files" ]; then
+            echo "LaTeX sources must not be committed:"; echo "$files"; exit 1
+          fi
+          echo "No LaTeX sources tracked."
