@@ -39,7 +39,6 @@ Inside the archive (`src/`):
 | `corpus_collect.py` | collects public `ssh-rsa` keys, stores only salted-hash identifiers, exponents and moduli |
 | `corpus_audit.py` | the pre-specified audit battery, batch GCD, planted controls |
 | `corpus_audit_results.json` | aggregate outcome of the audit (no keys, no account names) |
-| `article_source.tex` | LaTeX source of the preprint |
 | `requirements.txt` | Python dependencies |
 
 ## Reproducing

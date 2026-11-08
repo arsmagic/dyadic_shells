@@ -32,8 +32,8 @@ This creates small 64-bit smoke-test outputs in:
 
 - `results/diagnostics_64.csv`
 - `results/sieve_64.csv`
-- `tables/diagnostics_table.tex`
-- `tables/sieve_table.tex`
+- `tables/diagnostics_table.tex` (generated locally; LaTeX files are not committed)
+- `tables/sieve_table.tex` (generated locally; LaTeX files are not committed)
 
 ## Recommended article-scale run
 
