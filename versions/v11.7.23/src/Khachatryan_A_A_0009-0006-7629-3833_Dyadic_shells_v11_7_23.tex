@@ -1,0 +1,244 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1in]{geometry}
+\usepackage{amssymb,amsmath,booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,pdfusetitle]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Lset}{\mathcal{L}}
+
+\title[Exact two-adic counts for the hyperbolic sieve]{Dyadic Shells, Version 11.7.23:\\ Exact two-adic counts for Fermat-type quadratic sieves and the hyperbolic sieve}
+\author{Arsen A. Khachatryan}
+\address{SibarS Labs, SibarS Group of Companies}
+\email{cto@sibars.net}
+\thanks{ORCID 0009-0006-7629-3833. Preprint, Version 11.7.23, 8 November 2026, DOI \href{https://doi.org/10.5281/zenodo.24051028}{10.5281/zenodo.24051028}; not peer-reviewed.}
+\date{2026-11-08}
+
+\begin{document}
+
+\begin{abstract}
+For an odd integer $N$ let $C_m(N)$ be the number of residues $A \bmod 2^m$ for which $A^2-N$ is a square modulo $2^m$. These counts describe the two-adic stage of Fermat-type factorisation sieves. Through the identity $x^2-4kN=(ku-v)^2$ they also determine the size of Hittmeir's hyperbolic sieve sets $\Lset_{N,2^e,k}$, for which only computed values have been recorded. We determine $C_m(N)$ for every odd $N$ and every $m\ge1$: it depends only on $N\bmod 8$; it equals $2^{m-2}$ for $N\equiv3\pmod4$ and $2^{m-3}$ for $N\equiv5\pmod8$ (for $m\ge3$, resp.\ $m\ge5$); and for $N\equiv1\pmod8$ it equals four times the number of squares modulo $2^{m-4}$ ($m\ge4$), i.e.\ $(2^{m-3}+16)/3$ or $(2^{m-3}+20)/3$ for even $m\ge6$ or odd $m\ge5$. We prove $|\Lset_{N,2^e,k}|=C_e(kN)/2$ for odd $N,k$ and $e\ge1$; this gives proofs of the values for powers of two that Hittmeir recorded computationally, with a recursion exponent that differs from the one printed in the arXiv version of that paper. Consequently the two-adic pass proportion satisfies $C_m(N)/2^m>1/24$ for all odd $N$ and all $m$, and $1/24$ cannot be replaced by a larger constant. We also show that a sieve prime $\ell$ dividing the multiplier exactly once removes a proportion $1/\ell$ of the residues modulo $\ell^2$ and nothing more at higher powers. The reduction to $N\bmod8$ is formally verified in Lean~4 with Mathlib; the closed forms are not yet formally verified.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Fermat's method, in Lawrence's form~\cite{lawrence}, searches for a decomposition $N=uv$ through the identity
+\[
+(au+bv)^2-(au-bv)^2=4abN ,
+\]
+testing candidates $x$ for which $x^2-4abN$ is a perfect square. Practical implementations first discard candidates for which $x^2-4abN$ is not a square modulo some small moduli~\cite{mckee}. Hittmeir~\cite{hittmeir2018,hittmeir2023} recast this filter as the \emph{hyperbolic sieve}: for a modulus $M$ coprime to $Nk$ put
+\[
+\Lset_{N,M,k}=\{\,kx+y \bmod M : xy\equiv N \pmod M\,\},
+\]
+so that $ku+v \bmod M\in\Lset_{N,M,k}$ for every co-divisor pair $(u,v)$ of $N$. For an odd prime $r$ he proved $|\Lset_{N,r,k}|=(r+(k^{-1}N\mid r))/2$~\cite[Lemma~3.4]{hittmeir2023}, showed that for odd $M$ the set coincides with $\{x : x^2-4kN \text{ is a square mod } M\}$~\cite[Lemma~4.2]{hittmeir2023}, determined $|\Lset_{N,r^e,k}|$ for odd prime powers~\cite[Theorem~3.5]{hittmeir2023}, and used these sets to refine the complexity of Fermat's method by a subexponential factor~\cite[Theorem~4.6]{hittmeir2023}. The same sets underlie the deterministic algorithms of Harvey and Hittmeir~\cite{harveyhittmeir} and the multi-target and quadratic-image refinements of Stănică, Mulder and Hittmeir~\cite{smh2026} and Stănică~\cite{stanica2026}, which use odd auxiliary primes. (Theorem and lemma numbers of~\cite{hittmeir2023} refer to arXiv:2205.10074v1; we could not access the typeset journal version.)
+
+For powers of two, \cite[Remark~7.5]{hittmeir2023} records the sizes of $\Lset_{N,2^e,k}$ ``according to our computations'' and suggests that they could be proved by modifying the odd-prime argument. Independently, the author's preprint series on anchored Fermat-type screening~\cite{khach11517} proved, for odd $N\ge3$, only the $N$-dependent bound $C_m(N)/2^m\ge2^{-(2v+3)}$ with $v=v_2((N-1)/2)$, and left the limiting value $1/24$ for $N\equiv1\pmod8$ as a conjecture supported by computation.
+
+\subsection*{Relation to Version 11.5.17}
+This is Version~11.7.23 of the preprint series on dyadic shells in semiprime arithmetic (series concept DOI 10.5281/zenodo.20306132). It is a separate paper on the two-adic stage of the sieve and does not modify Version~11.5.17~\cite{khach11517} (17~October 2026, DOI 10.5281/zenodo.23432486), which remains the record of what was stated then: for odd $N\ge3$ the lower bound $\pi_m(N)\ge2^{-(2v+3)}$, $v=v_2((N-1)/2)$ (Proposition~4.2 there), and the value $1/24$ for $N\equiv1\pmod 8$ as a conjecture supported by computation. Theorem~\ref{thm:main} and Corollary~\ref{cor:density} below prove that value and replace the bound by an exact count. The sieve counts for odd primes and odd prime powers used in Version~11.5.17 (Propositions~4.1 and~4.3 there) are due to Hittmeir~\cite{hittmeir2023}, and the identity behind its Proposition~3.1 is Lawrence's~\cite{lawrence}.
+
+\subsection*{What is new and what is not}
+The criterion for squares modulo $2^m$ (Lemma~\ref{lem:squares}) and the count of squares modulo $2^n$ (Lemma~\ref{lem:sqcount}, \cite{stangl}) are classical. The hyperbolic sieve and its sizes for odd primes and odd prime powers are due to Hittmeir~\cite{hittmeir2023}. To our knowledge, after a search of the cited literature, the OEIS and general web search, the closed forms of Theorem~\ref{thm:main}, the identity of Theorem~\ref{thm:hyp} and the sharp constant $1/24$ have not been stated with proof before; an automated reading of Shparlinski's survey on modular hyperbolas~\cite{shparlinski} found no such count either. This is not an expert literature review, in particular of the literature on $2$-adic local densities, and we make no stronger novelty claim. Nothing here gives a new general-purpose factoring algorithm or affects properly generated RSA keys.
+
+\subsection*{Results}
+Let $N$ be odd and
+\[
+C_m(N)=\#\{A\in\Z/2^m\Z : A^2-N \text{ is a square modulo } 2^m\},\qquad \pi_m(N)=C_m(N)/2^m .
+\]
+Here and below $m$, $e$, $k_0$ denote exponents of $2$, and $M$ denotes a general modulus.
+
+\begin{theorem}\label{thm:main}
+Let $N$ be odd. Then $C_1(N)=C_2(N)=2$, and for $m\ge3$:
+\begin{enumerate}
+\item if $N\equiv3\pmod4$, then $C_m(N)=2^{m-2}$;
+\item if $N\equiv5\pmod8$, then $C_3(N)=C_4(N)=4$ and $C_m(N)=2^{m-3}$ for $m\ge5$;
+\item if $N\equiv1\pmod8$, then $C_3(N)=4$ and $C_m(N)=4\,s(m-4)$ for $m\ge4$, where $s(n)$ is the number of squares modulo $2^n$. Explicitly, $C_4(N)=4$ and
+\[
+C_m(N)=\frac{2^{m-3}+16}{3}\ (m\ge6\text{ even}),\qquad C_m(N)=\frac{2^{m-3}+20}{3}\ (m\ge5\text{ odd}).
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}\label{cor:density}
+For every odd $N$ and every $m\ge1$, $\pi_m(N)>1/24$. Moreover $\lim_{m\to\infty}\pi_m(N)$ equals $1/4$, $1/8$ or $1/24$ according as $N\equiv3\pmod4$, $N\equiv5\pmod8$ or $N\equiv1\pmod8$; in particular $\inf_{N,m}\pi_m(N)=1/24$.
+\end{corollary}
+
+\begin{theorem}\label{thm:hyp}
+Let $N,k$ be odd and $e\ge1$. Then $|\Lset_{N,2^e,k}|=C_e(kN)/2$. Consequently $|\Lset_{N,2,k}|=|\Lset_{N,4,k}|=1$, $|\Lset_{N,8,k}|=1$ if $N\equiv3k\pmod4$ and $2$ otherwise, $|\Lset_{N,16,k}|=2$, $|\Lset_{N,32,k}|=2$ if $N\equiv5k\pmod8$ and $4$ otherwise, and for $e\ge5$
+\[
+|\Lset_{N,2^{e+1},k}|=
+\begin{cases}
+2\,|\Lset_{N,2^e,k}| & \text{if } N\equiv3k\pmod 4 \text{ or } N\equiv5k\pmod8,\\
+2\bigl(|\Lset_{N,2^e,k}|-2^{\,e \bmod 2}\bigr) & \text{if } N\equiv k\pmod8.
+\end{cases}
+\]
+\end{theorem}
+
+\begin{remark}\label{rem:exponent}
+In arXiv:2205.10074v1, the last case of Remark~7.5 is printed with the exponent $(e+1)\bmod 2$, and so is the analogous term of Theorem~3.5 (odd prime powers, case $(k^{-1}N\mid r)=1$). The values in Example~4.7 of the same text ($|\Lset_{N,2^e,1}|=2,4,4,6,8,14,24$ for $e=4,\dots,10$ and $N\equiv1\pmod8$; $4,16,106$ modulo $7,7^2,7^3$) agree with the exponent $e\bmod2$, and so do all finite tests of Section~\ref{sec:numerics}; with $(e+1)\bmod2$ none of the tested steps agrees. For the two-adic case, Theorem~\ref{thm:hyp} proves the exponent $e\bmod 2$. We have not seen the typeset journal version~\cite{hittmeir2023} and found no erratum; we therefore attribute the printed exponent only to the arXiv text.
+\end{remark}
+
+\subsection*{Computational meaning}
+Corollary~\ref{cor:density} concerns the two-adic filter alone: among residues $A\bmod 2^m$ distributed uniformly, the condition ``$A^2-N$ is a square modulo $2^m$'' keeps a proportion $\pi_m(N)>1/24\approx4.17\%$, whatever $m$ is. It says nothing about a sieve composed of several moduli, whose survivor proportion is the product of local proportions only under an independence assumption that fails for structured candidate sets; nor does a sharper local density by itself imply a lower total bit cost. For odd $N\ge3$ the bound $2^{-(2v+3)}$, $v=v_2((N-1)/2)$, proved in~\cite{khach11517} remains valid but can be far weaker (e.g.\ $2^{-15}$ for $v=6$); for $N=1$ that bound is not defined.
+
+\section{Squares modulo powers of two}
+
+\begin{lemma}\label{lem:squares}
+Let $n\ge1$ and $x\in\Z$. Then $x$ is a square modulo $2^n$ if and only if either $2^n\mid x$, or $x=2^{2i}w$ with $w$ odd, $2i<n$ and $w\equiv1\pmod{2^{\min(3,\,n-2i)}}$.
+\end{lemma}
+
+\begin{proof}
+For odd $w$ and $t\ge1$, $w$ is a square modulo $2^t$ if and only if $w\equiv1\pmod{2^{\min(3,t)}}$: necessity because odd squares are $\equiv1\pmod 8$, sufficiency by lifting square roots modulo powers of two (equivalently, an odd $w\equiv1\pmod8$ is a square in $\Z_2$~\cite[Ch.~II, Thm.~4]{serre}). Now let $x\not\equiv0\pmod{2^n}$ with $v_2(x)=j<n$. If $x\equiv y^2\pmod{2^n}$ then $v_2(y^2)=j$: otherwise $v_2(x-y^2)=\min(j,v_2(y^2))\le j<n$, contradicting $2^n\mid x-y^2$. Hence $j=2i$ is even and $y=2^iz$ with $z$ odd, and $z^2\equiv w\pmod{2^{n-2i}}$. Conversely, if $z^2\equiv w\pmod{2^{n-2i}}$ then $(2^iz)^2\equiv x\pmod{2^n}$.
+\end{proof}
+
+For $t\ge1$ let $f(t)$ be the number of odd residues modulo $2^t$ that are squares modulo $2^t$. By the first sentence of the proof, $f(1)=f(2)=1$ and $f(t)=2^{t-3}$ for $t\ge3$.
+
+\begin{lemma}[{\cite{stangl}}]\label{lem:sqcount}
+The number $s(n)$ of squares modulo $2^n$ satisfies $s(0)=1$ and
+\[
+s(n)=1+\sum_{0\le i<n/2} f(n-2i)=\frac{2^n+9-(-1)^n}{6}\qquad(n\ge1).
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:squares} the squares modulo $2^n$ are $0$ and the residues $2^{2i}w$ with $2i<n$ and $w$ an odd square modulo $2^{n-2i}$; for fixed $i$ there are $f(n-2i)$ of them. For the closed form: $s(1)=1+f(1)=2$, $s(2)=1+f(2)=2$, $s(3)=1+f(3)+f(1)=3$, $s(4)=1+f(4)+f(2)=4$; and for $n\ge5$, $s(n)-s(n-2)=f(n)=2^{n-3}$, which the closed form satisfies, since $(2^n-2^{n-2})/6=2^{n-3}$.
+\end{proof}
+
+\begin{lemma}[halving]\label{lem:halving}
+For $n\ge2$ and $x\in\Z$, $4x$ is a square modulo $2^n$ if and only if $x$ is a square modulo $2^{n-2}$.
+\end{lemma}
+
+\begin{proof}
+If $x\equiv z^2\pmod{2^{n-2}}$ then $4x\equiv(2z)^2\pmod{2^n}$. Conversely, if $4x\equiv y^2\pmod{2^n}$ then $4\mid y^2$, so $y=2z$ and $4x\equiv4z^2\pmod{2^n}$, i.e.\ $x\equiv z^2\pmod{2^{n-2}}$.
+\end{proof}
+
+\section{\texorpdfstring{Reduction to $N\bmod 8$}{Reduction to N mod 8}}
+
+\begin{lemma}[unit-square invariance]\label{lem:scaling}
+Let $R$ be a finite commutative ring, $N\in R$ and $u\in R^\times$. Then the number of $A\in R$ with $A^2-u^2N$ a square in $R$ equals the number of $A\in R$ with $A^2-N$ a square in $R$.
+\end{lemma}
+
+\begin{proof}
+$A\mapsto u^{-1}A$ is a bijection of $R$, and $(u^{-1}A)^2-N=u^{-2}(A^2-u^2N)$; multiplication by the square of a unit preserves squareness in both directions.
+\end{proof}
+
+\begin{proposition}\label{prop:mod8}
+If $N,N'$ are odd and $N\equiv N'\pmod 8$, then $C_m(N)=C_m(N')$ for every $m\ge1$.
+\end{proposition}
+
+\begin{proof}
+$NN'\equiv N'^2\equiv1\pmod8$, so by Lemma~\ref{lem:squares} there is $y$ with $y^2\equiv NN'\pmod{2^m}$. Let $a$ be an inverse of $N'$ modulo $2^m$ and $u=ya$. Then $u^2N'\equiv NN'a^2N'\equiv N\pmod{2^m}$, and $u$ is a unit because $u^2N'\equiv N$ is. Apply Lemma~\ref{lem:scaling} with $R=\Z/2^m\Z$.
+\end{proof}
+
+Lemma~\ref{lem:scaling} and Proposition~\ref{prop:mod8} are formally verified (Section~\ref{sec:lean}). It therefore suffices to treat $N\in\{1,3,5,7\}$; negative $N$ are covered as well.
+
+\section{\texorpdfstring{Proof of Theorem~\ref{thm:main}}{Proof of Theorem 1}}
+
+\emph{The cases $m\le2$.} Every residue is a square modulo $2$, so $C_1=2$. Modulo $4$ the squares are $0,1$; if $N\equiv1\pmod4$ exactly the odd $A$ pass ($A^2-N\equiv0$), and if $N\equiv3\pmod4$ exactly the even $A$ pass ($A^2-N\equiv1$). Hence $C_2=2$. From now on $m\ge3$; oddness of $N$ is used throughout, since it makes $A^2-N$ odd for even $A$ and even for odd $A$.
+
+\emph{Case $N\equiv3\pmod4$.} For odd $A$, $A^2-N\equiv 1-N\equiv2\pmod4$ has valuation $1$ and is not a square modulo $2^m$ (Lemma~\ref{lem:squares}). For $A=2a$, $A^2-N=4a^2-N$ is odd, hence a square modulo $2^m$ iff $4a^2\equiv N+1\pmod 8$. For $N\equiv3\pmod 8$ this means $a$ odd, for $N\equiv7\pmod8$ it means $a$ even. As $a$ runs over $\Z/2^{m-1}\Z$, half of the values qualify: $C_m(N)=2^{m-2}$.
+
+\emph{Case $N\equiv5\pmod8$.} Take $N=5$. Even $A$ give $A^2-5\equiv3\pmod4$, never a square. For $A=2t+1$ we have $A^2-5=4T$ with $T=t(t+1)-1$ odd. By Lemmas~\ref{lem:halving} and~\ref{lem:squares}, $A$ passes iff $T\equiv1\pmod{2^{\min(3,m-2)}}$, i.e.\ $t(t+1)\equiv2\pmod{2^{\min(3,m-2)}}$. As $A$ runs over the odd residues modulo $2^m$, $t$ runs over $\Z/2^{m-1}\Z$. For $m=3$ the condition is vacuous: $C_3=4$. For $m=4$ it reads $t\equiv1,2\pmod4$: $C_4=4$. For $m\ge5$ it reads $t\equiv1,6\pmod8$, a proportion $1/4$ of $\Z/2^{m-1}\Z$: $C_m=2^{m-3}$.
+
+\emph{Case $N\equiv1\pmod8$.} Take $N=1$. Even $A$ give $A^2-1\equiv3\pmod4$. For $A=2t+1$, $A^2-1=4t(t+1)$, and by Lemma~\ref{lem:halving} $A$ passes iff $t(t+1)$ is a square modulo $2^{k_0}$, $k_0=m-2\ge1$. This condition depends only on $t\bmod 2^{k_0}$, while $t$ runs over $\Z/2^{m-1}\Z$; hence $C_m(1)=2D_{k_0}$ with
+\[
+D_{k_0}=\#\{t\in\Z/2^{k_0}\Z : t(t+1) \text{ is a square mod } 2^{k_0}\}.
+\]
+The involution $t\mapsto-1-t$ of $\Z/2^{k_0}\Z$ preserves $t(t+1)$ and exchanges the even and the odd residues, so $D_{k_0}=2E_{k_0}$, where $E_{k_0}$ counts the even $t$; thus $C_m(1)=4E_{m-2}$.
+
+\emph{Claim:} $E_1=1$ and $E_{k_0}=s(k_0-2)$ for $k_0\ge2$. For $k_0=1$ the only even residue is $t=0$, which qualifies. Let $k_0\ge2$. The residue $t\equiv0$ qualifies. Every other even $t$ is $t=2^ju$ with $1\le j\le k_0-1$ and $u$ odd modulo $2^{k_0-j}$, and there are $2^{k_0-j-1}$ such $t$ for each $j$. Then $t(t+1)=2^jw$ with $w=u(1+2^ju)$ odd. By Lemma~\ref{lem:squares}, $t(t+1)$ is a square modulo $2^{k_0}$ iff $j$ is even and $w\equiv1\pmod{2^{\sigma}}$, $\sigma=\min(3,k_0-j)$. For even $j\ge2$ the map $u\mapsto u(1+2^ju)$ permutes the odd residues modulo $2^\sigma$: modulo $8$ it is $u\mapsto u+4$ for $j=2$ (as $4u^2\equiv4$) and the identity for $j\ge4$, and modulo $2^\sigma$ with $\sigma\le2$ it is the identity. Hence for each even $j$ exactly $2^{k_0-j-1}/2^{\sigma-1}=f(k_0-j)$ values of $t$ qualify, and
+\[
+E_{k_0}=1+\sum_{\substack{2\le j\le k_0-1\\ j\text{ even}}} f(k_0-j)=1+\sum_{0\le i<(k_0-2)/2}f(k_0-2-2i)=s(k_0-2),
+\]
+with $j=2i+2$ and Lemma~\ref{lem:sqcount}; for $k_0=2$ the sum is empty and $E_2=1=s(0)$. This proves the claim.
+
+Therefore $C_3(1)=4E_1=4$ and $C_m(1)=4s(m-4)$ for $m\ge4$. For $m=4$ this is $4s(0)=4$; for $m\ge5$, Lemma~\ref{lem:sqcount} gives $4(2^{m-4}+8)/6=(2^{m-3}+16)/3$ for even $m$ and $4(2^{m-4}+10)/6=(2^{m-3}+20)/3$ for odd $m$. As a check at the smallest cases, $E_3=s(1)=2$, $E_4=s(2)=2$, $E_5=s(3)=3$, $E_6=s(4)=4$, $E_7=s(5)=7$, which agree with direct enumeration (Section~\ref{sec:numerics}); e.g.\ for $k_0=4$ the even $t\bmod 16$ with $t(t+1)$ a square are $t=0,4$, and for $k_0=5$ they are $t=0,16,20\bmod 32$. \qed
+
+\begin{proof}[Proof of Corollary~\ref{cor:density}]
+For $N\equiv3\pmod4$ the proportions are $1,\tfrac12,\tfrac14,\tfrac14,\dots$; for $N\equiv5\pmod 8$ they are $1,\tfrac12,\tfrac12,\tfrac14,\tfrac18,\tfrac18,\dots$. For $N\equiv1\pmod8$ they are $1,\tfrac12,\tfrac12,\tfrac14$ for $m\le4$, and $\pi_m=\tfrac1{24}+\tfrac{16}{3\cdot2^m}$ (even $m\ge6$) or $\tfrac1{24}+\tfrac{20}{3\cdot2^m}$ (odd $m\ge5$). All values exceed $1/24$, and $\pi_m\to1/24$ for $N\equiv1\pmod 8$.
+\end{proof}
+
+\begin{remark}
+The limits are Haar measures: $\lim_m\pi_m(N)$ is the measure of $\{A\in\Z_2 : A^2-N\in\Z_2^2\}$, since passing at every level is equivalent to $A^2-N$ being a $2$-adic square (the set of squares of $\Z_2$ is closed). For $N=1$ and $A=2t+1$, the even-$t$ part has measure $\sum_{j\ge2\text{ even}}2^{-(j+1)}\cdot\tfrac14=\tfrac1{24}$ in the $t$-variable, the odd-$t$ part the same, and $A$ is odd with measure $\tfrac12$, which gives $\tfrac12\cdot\tfrac1{12}=\tfrac1{24}$.
+\end{remark}
+
+\section{The hyperbolic sieve modulo powers of two}
+
+\begin{proof}[Proof of Theorem~\ref{thm:hyp}]
+Since $k$ is odd it is a unit modulo $2^e$, and the substitution $x\mapsto kx$ in the definition gives $\Lset_{N,2^e,k}=\Lset_{kN,2^e,1}$. Put $K=kN$; it is odd. For $e=1$ both sides of the claim equal $1$ (the set is $\{0\}$ and $C_1=2$), so let $e\ge2$. Every element of $\Lset_{K,2^e,1}$ is even, being a sum of two units. For $a\in\Z$ the class of $a^2 \bmod 2^e$ depends only on $a\bmod 2^{e-1}$, because $(a+2^{e-1})^2=a^2+2^ea+2^{2e-2}$ and $2e-2\ge e$. We claim that for $a\in\Z$
+\[
+2a \bmod 2^e\in\Lset_{K,2^e,1}\iff a^2-K \text{ is a square modulo } 2^e .
+\]
+If $2a\equiv x+y$ with $xy\equiv K$, then $(x-a)^2=x^2-2ax+a^2\equiv x^2-x(x+y)+a^2=a^2-K\pmod{2^e}$. Conversely, if $a^2-K\equiv z^2$, put $x=a+z$, $y=a-z$; then $xy\equiv K$, so $x,y$ are units because $K$ is odd, and $x+y=2a$. Since $a\mapsto 2a$ maps $\Z/2^{e-1}\Z$ bijectively onto the even residues modulo $2^e$, $|\Lset_{K,2^e,1}|$ is the number of $a\bmod2^{e-1}$ with $a^2-K$ a square modulo $2^e$; by the periodicity just noted this is $C_e(K)/2$.
+
+The listed values and the recursion follow from Theorem~\ref{thm:main} applied to $K=kN$; note that $kN\equiv3\pmod4$, $kN\equiv5\pmod8$ and $kN\equiv1\pmod8$ are equivalent to $N\equiv3k\pmod 4$, $N\equiv5k\pmod8$ and $N\equiv k\pmod8$ respectively, because $k^2\equiv1\pmod8$. For $N\equiv k\pmod 8$ and $e\ge5$, Theorem~\ref{thm:main} gives $2|\Lset_{N,2^e,k}|-|\Lset_{N,2^{e+1},k}|=2$ for even $e$ and $4$ for odd $e$, that is, $|\Lset_{N,2^{e+1},k}|=2(|\Lset_{N,2^e,k}|-2^{e\bmod2})$.
+\end{proof}
+
+\begin{remark}
+Two different sets must not be confused. For odd $M$, \cite[Lemma~4.2]{hittmeir2023} identifies $\Lset_{N,M,k}$ with the full set of $x\bmod M$ for which $x^2-4kN$ is a square. Modulo $2^e$ the relevant comparison is with the half-centre $A=x/2$ and the polynomial $A^2-kN$: the pass set of $A^2-kN$ modulo $2^e$ has $C_e(kN)$ elements, and the hyperbolic set has half as many, because $x=2A$ determines $A$ only modulo $2^{e-1}$.
+\end{remark}
+
+\section{Sieve primes dividing the multiplier}
+
+Algorithms that sieve $A^2-kn$ with several multipliers $k$ usually discard the primes that divide $kn$~\cite[Algorithm~4.3]{hittmeir2023}. A prime dividing $k$ exactly once still carries some information:
+
+\begin{proposition}\label{prop:divk}
+Let $\ell$ be an odd prime, $K\in\Z$ with $v_\ell(K)=1$, and $e\ge2$. Then the number of $A\bmod\ell^e$ for which $A^2-K$ is a square modulo $\ell^e$ is $\ell^e-\ell^{e-1}$.
+\end{proposition}
+
+\begin{proof}
+If $\ell\nmid A$ then $A^2-K\equiv A^2\pmod\ell$ is a non-zero quadratic residue, hence a square modulo $\ell^e$ by Hensel's lemma. If $\ell\mid A$ then $v_\ell(A^2-K)=1<e$, and an element of valuation $1$ is not a square modulo $\ell^e$ for $e\ge2$, by the same valuation argument as in Lemma~\ref{lem:squares}.
+\end{proof}
+
+Thus such a prime removes a proportion $1/\ell$ at modulus $\ell^2$ and nothing more at higher powers, which is weaker than the factor of about $1/2$ obtained from a prime not dividing $kn$. For $\ell^2\mid K$ we do not give a general formula; an example is displayed in Section~\ref{sec:numerics}.
+
+\section{Finite-range tests}\label{sec:numerics}
+All stated identities were tested over the following finite ranges with the script \texttt{verify\_v11723.py} (pure Python~3; SHA-256 \texttt{64468db6\ldots aa9b95f}; exit status~$0$ iff all checks pass), pinned at \url{https://github.com/arsmagic/dyadic_shells/blob/c7a78b95f913a04f000ce7cd1593c6b652752049/research/twoadic-exact/verify_v11723.py}. These tests are not proofs. Results (all passed; full log \texttt{test\_log\_v11723.txt} in the same directory):
+\begin{itemize}
+\item Theorem~\ref{thm:main}, Corollary~\ref{cor:density} ($24C_m(N)>2^m$) and Proposition~\ref{prop:mod8}: odd $N\in[-259,259]$, $1\le m\le14$; $3640/3640$ cases each.
+\item $E_{k_0}$ by direct enumeration for $k_0=1,\dots,7$: $1,1,2,2,3,4,7$; $E_{k_0}=s(k_0-2)$ for $k_0=2,\dots,7$; $C_m(1)=4E_{m-2}$ for $m=3,\dots,14$; Lemma~\ref{lem:sqcount} for $n=0,\dots,16$.
+\item Theorem~\ref{thm:hyp}, $|\Lset_{N,2^e,k}|=C_e(kN)/2$: odd $N\in[-129,129]$, $k\in\{1,3,\dots,15\}$, $1\le e\le11$; $11440/11440$ triples.
+\item The recursion of Theorem~\ref{thm:hyp} for $N\equiv k\pmod 8$, $5\le e\le12$, nine pairs $(N,k)$: $72/72$ steps with exponent $e\bmod2$, $0/72$ with $(e+1)\bmod2$. For instance $|\Lset_{1,2^e,1}|=4,4,6,8$ for $e=5,6,7,8$.
+\item Example~4.7 of~\cite{hittmeir2023}: the values $2,4,4,6,8,14,24$ and $4,16,106$ are reproduced.
+\item Odd prime powers, recursion of~\cite[Theorem~3.5]{hittmeir2023} with $(k^{-1}N\mid r)=1$, $r\le13$, $r^{e+1}\le30{,}000$: $983/983$ steps with exponent $e\bmod2$, $0/983$ with $(e+1)\bmod2$.
+\item Proposition~\ref{prop:divk}: $\ell\in\{3,5,7\}$, $K=\ell n$ with $1\le n<30$, $\ell\nmid n$, $2\le e$, $\ell^e\le 200{,}000$; $345/345$ cases.
+\item Example for $\ell^2\mid K$: $\ell=3$, $K=9$, counts $3,9,24,60,174,510$ modulo $3^e$, $e=1,\dots,6$ (proportions $1,1,0.889,0.741,0.716,0.700$).
+\item Ingredients of the proofs: the bijection $u\mapsto u(1+2^ju)$ of odd residues modulo $2^\sigma$ for even $j\in[2,10]$, $\sigma\le3$ ($15/15$); Lemma~\ref{lem:halving} for $2\le n\le14$ and all $x\bmod 2^n$ ($32{,}764/32{,}764$); Lemma~\ref{lem:squares} against direct enumeration for $1\le n\le14$ ($32{,}766/32{,}766$).
+\end{itemize}
+
+\section{Formal verification}\label{sec:lean}
+The following are proved in Lean~4 (v4.24.0) with Mathlib (tag \texttt{v4.24.0}) in the repository \url{https://github.com/arsmagic/dyadic_shells}, file \texttt{formal/DyadicShells/TwoAdicExact.lean}, commit \texttt{96b857a} on \texttt{main}; the continuous-integration build and axiom audit of that commit succeeded and report only the axioms \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}:
+\begin{itemize}
+\item \texttt{DyadicShells.passCard\_unit\_sq\_mul} (Lemma~\ref{lem:scaling} for $R=\Z/M\Z$);
+\item \texttt{DyadicShells.passCard\_eq\_of\_modEq\_eight} (Proposition~\ref{prop:mod8}).
+\end{itemize}
+They rely on the in-project lemma \texttt{DyadicShells.isSquare\_mod\_two\_pow\_of\_one\_mod\_eight} (an integer $c\equiv1\pmod 8$ is a square modulo every $2^k$), file \texttt{formal/DyadicShells/TwoAdicSaturation.lean}. A proposed contribution of the odd-unit criterion to Mathlib (\texttt{ZMod.isSquare\_two\_pow\_iff\_of\_odd} and two case forms) is under review in pull request~\#45540~\cite{mathlibpr} and is not merged. The closed forms of Theorem~\ref{thm:main}, the bound and limits of Corollary~\ref{cor:density}, Lemma~\ref{lem:sqcount}, Theorem~\ref{thm:hyp} and Proposition~\ref{prop:divk} are \emph{not} formally verified. Source: \url{https://github.com/arsmagic/dyadic_shells/blob/96b857add4a649220888d6e32f862dd96f255daa/formal/DyadicShells/TwoAdicExact.lean}.
+
+\section*{Use of AI tools}
+% Adapt to the target journal's policy before submission.
+AI tools were used in deriving and checking the computations, in drafting the text and the test script, and in writing the Lean formalisation. The author is responsible for the content.
+
+\begin{thebibliography}{99}
+\bibitem{harveyhittmeir} D.~Harvey and M.~Hittmeir, \emph{A log-log speedup for exponent one-fifth deterministic integer factorisation}, Math. Comp. \textbf{91} (2022), no.~335, 1367--1379.
+\bibitem{hittmeir2018} M.~Hittmeir, \emph{A babystep-giantstep method for faster deterministic integer factorization}, Math. Comp. \textbf{87} (2018), no.~314, 2915--2935.
+\bibitem{hittmeir2023} M.~Hittmeir, \emph{Integer factorization as subset-sum problem}, J. Number Theory \textbf{249} (2023), 93--118, \href{https://doi.org/10.1016/j.jnt.2023.02.010}{doi:10.1016/j.jnt.2023.02.010}; cited from arXiv:2205.10074v1.
+\bibitem{khach11517} A.~A. Khachatryan, \emph{Anchored sparse-offset screening of semiprimes}, Version 11.5.17, Zenodo, 2026, \href{https://doi.org/10.5281/zenodo.23432486}{doi:10.5281/zenodo.23432486}.
+\bibitem{lawrence} F.~W. Lawrence, \emph{Factorisation of numbers}, Messenger of Math. \textbf{24} (1895), 100--109.
+\bibitem{mathlibpr} A.~A. Khachatryan, \emph{Odd-unit square criterion in \texttt{ZMod (2\textasciicircum n)}}, pull request \#45540 to \texttt{leanprover-community/mathlib4}, open as of 2026-11-08, \url{https://github.com/leanprover-community/mathlib4/pull/45540}.
+\bibitem{mckee} J.~McKee, \emph{Speeding Fermat's factoring method}, Math. Comp. \textbf{68} (1999), no.~228, 1729--1737.
+\bibitem{serre} J.-P. Serre, \emph{A Course in Arithmetic}, Graduate Texts in Mathematics~7, Springer, New York, 1973.
+\bibitem{stangl} W.~D. Stangl, \emph{Counting squares in $\mathbb{Z}_n$}, Math. Mag. \textbf{69} (1996), no.~4, 285--289.
+\bibitem{stanica2026} P.~Stănică, \emph{Improved deterministic integer factorization by quadratic-image sieving}, arXiv:2611.06580v1, 2026.
+\bibitem{shparlinski} I.~E. Shparlinski, \emph{Modular hyperbolas}, Jpn. J. Math. \textbf{7} (2012), 235--294; arXiv:1103.2879v4.
+\bibitem{smh2026} P.~Stănică, E.~Mulder and M.~Hittmeir, \emph{Multi-target hyperbolic sieves and elliptic trace obstructions}, arXiv:2606.13018v2, 2026.
+\end{thebibliography}
+
+\end{document}
