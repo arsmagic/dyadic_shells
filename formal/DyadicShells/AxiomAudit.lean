@@ -1,6 +1,7 @@
 import DyadicShells.Soundness
 import DyadicShells.QRSieve
 import DyadicShells.TwoAdicSaturation
+import DyadicShells.TwoAdicExact
 
 /-!
 # Axiom audit (Target 1)
@@ -43,3 +44,9 @@ red flag; none are present here.
 #print axioms DyadicShells.twoAdicPass_of_classN
 #print axioms DyadicShells.twoAdicPass_congr
 #print axioms DyadicShells.twoadic_saturation
+
+/-! ## Target 4 (milestone A): reduction of the exact two-adic count to `N mod 8` -/
+#print axioms DyadicShells.isSquare_unit_sq_mul_iff
+#print axioms DyadicShells.passCard_unit_sq_mul
+#print axioms DyadicShells.exists_inv_of_odd
+#print axioms DyadicShells.passCard_eq_of_modEq_eight
