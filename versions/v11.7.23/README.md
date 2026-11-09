@@ -25,7 +25,7 @@ status 0 iff all checks pass), its log, the package README and a copy of `TwoAdi
 ## Files archived on Zenodo
 
 - [Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23.pdf](https://zenodo.org/records/24051028/files/Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23.pdf?download=1) — PDF of the preprint
-- [Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23_source_package.zip](https://zenodo.org/records/24051028/files/Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23_source_package.zip?download=1) — archive, 7.4 KB (no LaTeX source)
+- [Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23_source_package.zip](https://zenodo.org/records/24051028/files/Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23_source_package.zip?download=1) — archive, 6.1 KB (no LaTeX source)
 - [Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23_README.md](https://zenodo.org/records/24051028/files/Khachatryan_A_A_0009-0006-7629-3833_Dyadic_shells_v11_7_23_README.md?download=1)
 
 ## How to cite
