@@ -35,6 +35,24 @@ theorem passCard_base (N : ℤ) (hN : Odd N) :
   rcases hcases (k : ZMod 4) with h | h | h | h <;> rw [h] <;>
     (unfold passCard; rw [Finset.filter_congr_decidable]; decide)
 
+/-- N ≡ 3 (mod 4): base level C_3 = 2. -/
+theorem passCard_three_base (N : ℤ) (hN : N ≡ 3 [ZMOD 4]) :
+    passCard ((N : ZMod (2 ^ 3))) = 2 := by
+  have hodd : Odd N := by
+    have hd : (4 : ℤ) ∣ (3 - N) := Int.modEq_iff_dvd.mp hN
+    exact Int.odd_iff.mpr (by omega)
+  have h4 : N % 4 = 3 := by have := Int.modEq_iff_dvd.mp hN; omega
+  have h8 : N ≡ 3 [ZMOD 8] ∨ N ≡ 7 [ZMOD 8] := by
+    have : N % 8 = 3 ∨ N % 8 = 7 := by omega
+    rcases this with h | h
+    · exact Or.inl (Int.modEq_iff_dvd.mpr (by omega))
+    · exact Or.inr (Int.modEq_iff_dvd.mpr (by omega))
+  rcases h8 with h8 | h8
+  · rw [passCard_eq_of_modEq_eight 3 N 3 hodd (by norm_num) h8]
+    unfold passCard; rw [Finset.filter_congr_decidable]; decide
+  · rw [passCard_eq_of_modEq_eight 3 N 7 hodd (by norm_num) h8]
+    unfold passCard; rw [Finset.filter_congr_decidable]; decide
+
 /-- N ≡ 3 (mod 4): C_m(N) = 2^(m-2) for m ≥ 3. -/
 theorem passCard_three_mod_four (N : ℤ) (hN : N ≡ 3 [ZMOD 4]) (m : ℕ) (hm : 3 ≤ m)
     [NeZero (2 ^ m)] :
