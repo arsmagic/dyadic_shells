@@ -1,6 +1,6 @@
 name = "DyadicShells"
 version = "0.1.0"
-defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex"]
+defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms"]
 
 [[lean_lib]]
 name = "DyadicShells"
@@ -18,6 +18,10 @@ name = "Solution"
 
 [[lean_lib]]
 name = "PaperIndex"
+
+# Target 4, milestone B: closed-form statements (proofs WIP).
+[[lean_lib]]
+name = "ClosedForms"
 
 [[require]]
 name = "mathlib"
