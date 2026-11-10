@@ -53,6 +53,21 @@ theorem passCard_three_base (N : ℤ) (hN : N ≡ 3 [ZMOD 4]) :
   · rw [passCard_eq_of_modEq_eight 3 N 7 hodd (by norm_num) h8]
     unfold passCard; rw [Finset.filter_congr_decidable]; decide
 
+/-- N ≡ 3 (mod 4): an odd (unit) center never passes, because A² − N ≡ 2 (mod 4)
+and 2 is not a square mod 4. Stated via the reduction `castHom : ZMod 2^k → ZMod 4`. -/
+theorem three_odd_not_pass {k : ℕ} (hk : (4 : ℕ) ∣ 2 ^ k) (N : ZMod (2 ^ k))
+    (hN4 : ZMod.castHom hk (ZMod 4) N = 3) (A : ZMod (2 ^ k)) (hA : IsUnit A) :
+    ¬ IsSquare (A ^ 2 - N) := by
+  intro hsq
+  have h := IsSquare.map (ZMod.castHom hk (ZMod 4)) hsq
+  rw [map_sub, map_pow, hN4] at h
+  have h1 : (ZMod.castHom hk (ZMod 4) A) ^ 2 = 1 :=
+    (by decide : ∀ a : ZMod 4, IsUnit a → a ^ 2 = 1) _ (hA.map (ZMod.castHom hk (ZMod 4)))
+  rw [h1] at h
+  have h2 : (1 - 3 : ZMod 4) = 2 := by decide
+  rw [h2] at h
+  exact (by decide : ¬ IsSquare (2 : ZMod 4)) h
+
 /-- N ≡ 3 (mod 4): C_m(N) = 2^(m-2) for m ≥ 3. -/
 theorem passCard_three_mod_four (N : ℤ) (hN : N ≡ 3 [ZMOD 4]) (m : ℕ) (hm : 3 ≤ m)
     [NeZero (2 ^ m)] :
