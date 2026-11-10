@@ -34,16 +34,16 @@ open Finset
 def TwoAdicPass (N m A : ℕ) : Prop :=
   ∃ y : ℕ, Nat.ModEq (2 ^ m) (A ^ 2) (N + y ^ 2)
 
-/-- Copy of `DyadicShells.passingCenters`: centers `A` with `A² − N` a square.
-`open Classical` matches the proof-side definition's decidability instance. -/
 open Classical in
+/-- Copy of `DyadicShells.passingCenters`: centers `A` with `A² − N` a square.
+`Classical` matches the proof-side definition's decidability instance. -/
 noncomputable def PassingCenters
     (F : Type*) [CommRing F] [Fintype F] [DecidableEq F] (N : F) : Finset F :=
   Finset.univ.filter (fun A => IsSquare (A ^ 2 - N))
 
+open Classical in
 /-- Copy of `DyadicShells.passCard`: number of residues `A mod n` with `A² − N`
 a square mod `n`. -/
-open Classical in
 noncomputable def PassCard {n : ℕ} [NeZero n] (N : ZMod n) : ℕ :=
   (Finset.univ.filter fun A : ZMod n => IsSquare (A ^ 2 - N)).card
 
@@ -68,10 +68,10 @@ def Prop41 : Prop :=
       ((PassingCenters F N).card : ℤ)
         = ((Fintype.card F : ℤ) + quadraticChar F N) / 2
 
+open Classical in
 /-- **Proposition 4.2 (uniform two-adic saturation).** For odd `N ≥ 3` there is
 `v` (namely `v₂((N−1)/2)`) such that for every level `m` the number of passing
 residues below `2^m` is at least `2^(m−(2v+3))`, i.e. `π_m(N) ≥ 2^(−(2v+3))`. -/
-open Classical in
 def Prop42 : Prop :=
   ∀ (N : ℕ), Odd N → 3 ≤ N →
     ∃ v : ℕ, ∀ m : ℕ,
