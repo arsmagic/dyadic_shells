@@ -1,0 +1,56 @@
+# Second-kernel verification step (SCAFFOLD — not drop-in).
+#
+# Adds an independent re-check of the comparator theorems with a second kernel
+# (nanoda), mirroring anthropics/formal-math. Append this job to
+# .github/workflows/lean-formal.yml.
+#
+# CAVEAT (read ADOPTION.md step 5): the Palomar comparator + nanoda + lean4export
+# in the reference repo run on Lean v4.33.1. This repo is pinned to v4.24.0. You
+# must use comparator/nanoda/lean4export builds matched to v4.24.0, OR bump the pin
+# and repair proof breakage. Until this job runs green, do NOT advertise a
+# second-kernel guarantee. The tool pins below are placeholders.
+
+  comparator-second-kernel:
+    runs-on: ubuntu-latest
+    needs: build            # after the normal `lake build` job
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Build the solution (challenge types proved)
+        working-directory: formal
+        run: |
+          lake exe cache get
+          lake build Solution
+
+      - name: Axiom audit (first kernel, convenience)
+        working-directory: formal
+        run: |
+          lake env lean DyadicShells/AxiomAudit.lean
+          # must print only: propext, Classical.choice, Quot.sound
+
+      # --- Independent second-kernel check (nanoda) ---
+      # Exports the kernel-level proof terms with lean4export, then re-checks them
+      # with the independently implemented nanoda kernel. Pin both to tools built
+      # against THIS repo's toolchain (see caveat above).
+      - name: Export proof terms (lean4export, toolchain-matched)
+        working-directory: formal
+        run: |
+          # TODO: pin lean4export to the v4.24.0-compatible revision
+          # lake env lean4export Solution --theorems \
+          #   DyadicShellsStatements.prop31,DyadicShellsStatements.prop41,\
+          #   DyadicShellsStatements.prop42,DyadicShellsStatements.target4MilestoneA \
+          #   > export.out
+          echo "configure lean4export (v4.24.0-matched) then enable the line above"
+
+      - name: Re-check with nanoda (second kernel)
+        run: |
+          # TODO: pin nanoda to the v4.24.0-compatible revision
+          # nanoda check export.out \
+          #   --permitted-axioms propext,Classical.choice,Quot.sound
+          echo "configure nanoda (v4.24.0-matched) then enable the line above"
