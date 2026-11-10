@@ -16,6 +16,14 @@ namespace DyadicShells.ClosedForms
 
 open DyadicShells
 
+/-- C_1 = 2 for every residue: in `ZMod 2` every element is a square, so every
+center passes. (First proved lemma; establishes the local build loop.) -/
+theorem passCard_mod2 (c : ZMod 2) : passCard c = 2 := by
+  have sq2 : ∀ y : ZMod 2, IsSquare y := by decide
+  unfold passCard
+  rw [Finset.filter_true_of_mem (fun A _ => sq2 _)]
+  decide
+
 /-- Base levels: C_1(N) = C_2(N) = 2 for odd N. -/
 theorem passCard_base (N : ℤ) (hN : Odd N) :
     passCard ((N : ZMod 2)) = 2 ∧ passCard ((N : ZMod 4)) = 2 := by
