@@ -27,7 +27,13 @@ theorem passCard_mod2 (c : ZMod 2) : passCard c = 2 := by
 /-- Base levels: C_1(N) = C_2(N) = 2 for odd N. -/
 theorem passCard_base (N : ℤ) (hN : Odd N) :
     passCard ((N : ZMod 2)) = 2 ∧ passCard ((N : ZMod 4)) = 2 := by
-  sorry
+  refine ⟨passCard_mod2 _, ?_⟩
+  obtain ⟨k, rfl⟩ := hN
+  have e : ((2 * k + 1 : ℤ) : ZMod 4) = 2 * (k : ZMod 4) + 1 := by push_cast; ring
+  have hcases : ∀ x : ZMod 4, x = 0 ∨ x = 1 ∨ x = 2 ∨ x = 3 := by decide
+  rw [e]
+  rcases hcases (k : ZMod 4) with h | h | h | h <;> rw [h] <;>
+    (unfold passCard; rw [Finset.filter_congr_decidable]; decide)
 
 /-- N ≡ 3 (mod 4): C_m(N) = 2^(m-2) for m ≥ 3. -/
 theorem passCard_three_mod_four (N : ℤ) (hN : N ≡ 3 [ZMOD 4]) (m : ℕ) (hm : 3 ≤ m)
