@@ -2,6 +2,12 @@ import DyadicShells.Soundness
 import DyadicShells.QRSieve
 import DyadicShells.TwoAdicSaturation
 import DyadicShells.TwoAdicExact
+-- Statement-surface files (MainResults is Mathlib-only; Solution proves the
+-- four claims from the theorems above; PaperIndex is the type-checked alias map).
+-- Importing them here wires them into `lake build` and the axiom audit.
+import MainResults
+import Solution
+import PaperIndex
 
 /-!
 # Axiom audit (Target 1)
@@ -50,3 +56,11 @@ red flag; none are present here.
 #print axioms DyadicShells.passCard_unit_sq_mul
 #print axioms DyadicShells.exists_inv_of_odd
 #print axioms DyadicShells.passCard_eq_of_modEq_eight
+
+/-! ## Statement surface: the four claims proved in `Solution.lean` against the
+Mathlib-only statements of `MainResults.lean`. These must depend only on the
+three standard axioms. -/
+#print axioms DyadicShellsStatements.prop31
+#print axioms DyadicShellsStatements.prop41
+#print axioms DyadicShellsStatements.prop42
+#print axioms DyadicShellsStatements.target4MilestoneA
