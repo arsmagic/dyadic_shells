@@ -114,7 +114,8 @@ theorem passCard_eq_of_modEq_eight (m : ℕ) [NeZero (2 ^ m)] (N N' : ℤ)
     linear_combination
       (N : ZMod (2 ^ m)) * ((a : ZMod (2 ^ m)) * (N' : ZMod (2 ^ m)) + 1) * ha
   have hNunit : IsUnit (N : ZMod (2 ^ m)) :=
-    isUnit_of_mul_eq_one _ (b : ZMod (2 ^ m)) (by rw [mul_comm]; exact hb)
+    (Units.mkOfMulEqOne (N : ZMod (2 ^ m)) (b : ZMod (2 ^ m))
+      (by rw [mul_comm]; exact hb)).isUnit
   have huunit : IsUnit ((y : ZMod (2 ^ m)) * (a : ZMod (2 ^ m))) := by
     have hprod : IsUnit (((y : ZMod (2 ^ m)) * (a : ZMod (2 ^ m))) *
         (((y : ZMod (2 ^ m)) * (a : ZMod (2 ^ m))) * (N' : ZMod (2 ^ m)))) := by

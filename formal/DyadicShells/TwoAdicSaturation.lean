@@ -133,7 +133,7 @@ theorem class_passesZ (v : ℕ) (w : ℤ) (hw : Odd w) (A : ℤ)
     have hwsq : w ^ 2 ≡ 1 [ZMOD 8] := odd_sq_modEq_one_eight w hw
     have hcw : c ≡ w ^ 2 [ZMOD 8] := Int.modEq_iff_dvd.mpr ⟨s, by rw [hcdef]; ring⟩
     exact hcw.trans hwsq
-  rcases le_or_lt m (2 * v) with hm | hm
+  rcases le_or_gt m (2 * v) with hm | hm
   · refine ⟨0, Int.modEq_iff_dvd.mpr ?_⟩
     have hdvd : (2 : ℤ) ^ m ∣ A ^ 2 - N := by
       rw [hANc, ← hT2]; exact (pow_dvd_pow 2 hm).mul_right c
@@ -251,8 +251,7 @@ theorem twoadic_saturation (N : ℕ) (hodd : Odd N) (h3 : 3 ≤ N) :
       refine ⟨?_, ?_⟩
       · have hstep : (j + 1) * 2 ^ (2 * v + 3) ≤ 2 ^ m := by
           calc (j + 1) * 2 ^ (2 * v + 3)
-                ≤ 2 ^ (m - (2 * v + 3)) * 2 ^ (2 * v + 3) :=
-                  mul_le_mul_right' hj1 _
+                ≤ 2 ^ (m - (2 * v + 3)) * 2 ^ (2 * v + 3) := by gcongr
             _ = 2 ^ m := hpm
         have hlt : ι j < (j + 1) * 2 ^ (2 * v + 3) := by
           have hre : (j + 1) * 2 ^ (2 * v + 3)
@@ -274,7 +273,7 @@ theorem twoadic_saturation (N : ℕ) (hodd : Odd N) (h3 : 3 ≤ N) :
       have hle := Finset.card_le_card_of_injOn ι hmaps hinj
       rwa [Finset.card_range] at hle
     calc 2 ^ m = 2 ^ (m - (2 * v + 3)) * 2 ^ (2 * v + 3) := hpm.symm
-      _ ≤ S.card * 2 ^ (2 * v + 3) := mul_le_mul_right' hcard _
+      _ ≤ S.card * 2 ^ (2 * v + 3) := by gcongr
       _ = 2 ^ (2 * v + 3) * S.card := Nat.mul_comm _ _
 
 end DyadicShells

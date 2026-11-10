@@ -1,0 +1,56 @@
+name: Comparator (second-kernel acceptance)
+
+# Independent re-check of the statement surface: leanprover/comparator verifies that
+# each Solution theorem has exactly the statement of its trusted Challenge namesake,
+# uses only the three standard axioms, and replays in a second, independently written
+# kernel (nanoda), inside a landrun sandbox. Tool pins match the eth/ reference
+# (PalomarRegistry verifier); lean4export is resolved from the project's lean-toolchain.
+
+on:
+  pull_request:
+    paths:
+      - "formal/**"
+      - ".github/workflows/comparator.yml"
+      - ".github/scripts/comparator-check.sh"
+  push:
+    branches: [main]
+    paths:
+      - "formal/**"
+      - ".github/workflows/comparator.yml"
+      - ".github/scripts/comparator-check.sh"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+  NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+  LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+
+jobs:
+  comparator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: formal
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan (project toolchain) and build the Lake manifest
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          "$HOME/.elan/bin/lake" update
+          test -s lake-manifest.json
+
+      - name: Fetch the Mathlib cache
+        run: lake exe cache get
+
+      - name: Comparator acceptance (lean4export + nanoda, in landrun)
+        run: bash ../.github/scripts/comparator-check.sh
