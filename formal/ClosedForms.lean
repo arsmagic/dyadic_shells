@@ -47,10 +47,17 @@ theorem passCard_five_mod_eight (N : ℤ) (hN : N ≡ 5 [ZMOD 8]) (m : ℕ) (hm 
     passCard ((N : ZMod (2 ^ m))) = 2 ^ (m - 3) := by
   sorry
 
-/-- N ≡ 1 (mod 8): base level C_4(N) = 4. -/
+/-- N ≡ 1 (mod 8): base level C_4(N) = 4. Reduce to the representative N = 1 via
+the mod-8 invariance (milestone A), then decide on the finite ring `ZMod 16`. -/
 theorem passCard_one_mod_eight_base (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) :
     passCard ((N : ZMod (2 ^ 4))) = 4 := by
-  sorry
+  have hodd : Odd N := by
+    have hd : (8 : ℤ) ∣ (1 - N) := Int.modEq_iff_dvd.mp hN
+    exact Int.odd_iff.mpr (by omega)
+  rw [passCard_eq_of_modEq_eight 4 N 1 hodd odd_one hN]
+  unfold passCard
+  rw [Finset.filter_congr_decidable]
+  decide
 
 /-- N ≡ 1 (mod 8), even m ≥ 6: 3·C_m(N) = 2^(m-3) + 16. (×3 avoids ℕ-division.) -/
 theorem passCard_one_mod_eight_even (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) (m : ℕ)
