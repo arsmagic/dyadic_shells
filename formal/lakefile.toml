@@ -22,4 +22,6 @@ name = "PaperIndex"
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.24.0"
+# Bumped from v4.24.0 to the Mathlib commit the eth/ formalization pins, which
+# tracks Lean v4.33.1 and has a known-good nanoda / lean4export second-kernel setup.
+rev = "0df444a360eaa60ab8c11dca51a86af692955474"
