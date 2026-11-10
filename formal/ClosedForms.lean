@@ -68,6 +68,15 @@ theorem three_odd_not_pass {k : ℕ} (hk : (4 : ℕ) ∣ 2 ^ k) (N : ZMod (2 ^ k
   rw [h2] at h
   exact (by decide : ¬ IsSquare (2 : ZMod 4)) h
 
+/-- Passing descends under the reduction `ZMod 2^(k+1) → ZMod 2^k`: a square
+`A² − N` mod 2^(k+1) reduces to a square mod 2^k. One half of the count argument. -/
+theorem pass_of_reduce {k : ℕ} (hk : (2 ^ k : ℕ) ∣ 2 ^ (k + 1)) (N A : ZMod (2 ^ (k + 1)))
+    (h : IsSquare (A ^ 2 - N)) :
+    IsSquare ((ZMod.castHom hk (ZMod (2 ^ k)) A) ^ 2
+      - ZMod.castHom hk (ZMod (2 ^ k)) N) := by
+  have h2 := IsSquare.map (ZMod.castHom hk (ZMod (2 ^ k))) h
+  rwa [map_sub, map_pow] at h2
+
 /-- N ≡ 3 (mod 4): C_m(N) = 2^(m-2) for m ≥ 3. -/
 theorem passCard_three_mod_four (N : ℤ) (hN : N ≡ 3 [ZMOD 4]) (m : ℕ) (hm : 3 ≤ m)
     [NeZero (2 ^ m)] :
