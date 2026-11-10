@@ -1,9 +1,23 @@
 name = "DyadicShells"
 version = "0.1.0"
-defaultTargets = ["DyadicShells"]
+defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex"]
 
 [[lean_lib]]
 name = "DyadicShells"
+
+# Statement surface (root modules). MainResults is Mathlib-only; Challenge states
+# the four claims with `sorry`; Solution proves them; PaperIndex is the alias map.
+[[lean_lib]]
+name = "MainResults"
+
+[[lean_lib]]
+name = "Challenge"
+
+[[lean_lib]]
+name = "Solution"
+
+[[lean_lib]]
+name = "PaperIndex"
 
 [[require]]
 name = "mathlib"

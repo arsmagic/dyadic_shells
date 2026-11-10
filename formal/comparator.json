@@ -1,0 +1,17 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "DyadicShellsStatements.prop31",
+    "DyadicShellsStatements.prop41",
+    "DyadicShellsStatements.prop42",
+    "DyadicShellsStatements.target4MilestoneA"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}
