@@ -521,8 +521,8 @@ Corollary of the four closed forms (one per residue class mod 8), with the small
 levels handled by `C_m ≥ 1`. -/
 theorem passCard_density (N : ℤ) (hN : Odd N) (m : ℕ) [NeZero (2 ^ m)] :
     2 ^ m < 24 * passCard ((N : ZMod (2 ^ m))) := by
-  rcases le_or_lt m 4 with hm4 | hm5
-  · -- small levels: 2^m ≤ 16 < 24 ≤ 24·C_m
+  rcases Nat.lt_or_ge m 5 with hm4 | hm5
+  · -- small levels (m ≤ 4): 2^m ≤ 16 < 24 ≤ 24·C_m
     have h1 := one_le_passCard N hN m
     have hb : (2 : ℕ) ^ m ≤ 16 := by
       calc (2 : ℕ) ^ m ≤ 2 ^ 4 := by apply Nat.pow_le_pow_right <;> omega
