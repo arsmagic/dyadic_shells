@@ -345,7 +345,7 @@ theorem pass_char_five {k : ℕ} (h32 : (32 : ℕ) ∣ 2 ^ k) (N : ℤ) (hN : N 
       rw [hk2, hcd]; linear_combination (4 : ℤ) * ht
     have hy2 : ((2 * y : ℤ) : ZMod (2 ^ k)) ^ 2 = ((c : ℤ) : ZMod (2 ^ k)) := by
       have h' := (ZMod.intCast_eq_intCast_iff ((2 * y) ^ 2) c (2 ^ k)).mpr hcsq
-      push_cast at h'; exact h'
+      push_cast at h' ⊢; exact h'
     refine ⟨((2 * y : ℤ) : ZMod (2 ^ k)), ?_⟩
     rw [← hcast, ← hy2]; ring
 
