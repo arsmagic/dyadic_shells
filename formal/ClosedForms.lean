@@ -465,6 +465,18 @@ theorem passCard_one_five_base (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) :
   rw [Finset.filter_congr_decidable]
   decide
 
+set_option maxHeartbeats 4000000 in
+/-- N ≡ 1 (mod 8): even-chain base C_6 = 8 (representative N = 1, decide on ZMod 64). -/
+theorem passCard_one_six_base (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) :
+    passCard ((N : ZMod (2 ^ 6))) = 8 := by
+  have hodd : Odd N := by
+    have hd : (8 : ℤ) ∣ (1 - N) := Int.modEq_iff_dvd.mp hN
+    exact Int.odd_iff.mpr (by omega)
+  rw [passCard_eq_of_modEq_eight 6 N 1 hodd odd_one hN]
+  unfold passCard
+  rw [Finset.filter_congr_decidable]
+  decide
+
 /-- N ≡ 1 (mod 8), even m ≥ 6: 3·C_m(N) = 2^(m-3) + 16. (×3 avoids ℕ-division.) -/
 theorem passCard_one_mod_eight_even (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) (m : ℕ)
     (hm : 6 ≤ m) (hpar : Even m) [NeZero (2 ^ m)] :
