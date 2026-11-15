@@ -275,11 +275,171 @@ theorem passCard_three_mod_four (N : ℤ) (hN : N ≡ 3 [ZMOD 4]) (m : ℕ) (hm 
       have hk2 : k + 1 - 2 = (k - 2) + 1 := by omega
       rw [hk2, pow_succ]; ring
 
+set_option maxHeartbeats 1000000 in
+/-- Characterization for `N ≡ 5 (mod 8)`, level `k ≥ 5`: a center `A` passes iff
+the value `A² − N` is `≡ 4 (mod 32)`.  Forward: push to `ZMod 32` and `decide`
+(for `b ∈ {5,13,21,29}` the only square value of `a² − b` is `4`).  Backward:
+write `A² − N = 4·d` with `d ≡ 1 (mod 8)` and lift `d` by Hensel at level `k−2`. -/
+theorem pass_char_five {k : ℕ} (h32 : (32 : ℕ) ∣ 2 ^ k) (N : ℤ) (hN : N ≡ 5 [ZMOD 8])
+    (A : ZMod (2 ^ k)) :
+    IsSquare (A ^ 2 - ((N : ℤ) : ZMod (2 ^ k)))
+      ↔ ZMod.castHom h32 (ZMod 32) (A ^ 2 - ((N : ℤ) : ZMod (2 ^ k))) = 4 := by
+  have hk5 : 5 ≤ k := by
+    by_contra hlt
+    push_neg at hlt
+    interval_cases k <;> exact absurd h32 (by decide)
+  have hN32 : ZMod.castHom h32 (ZMod 32) ((N : ℤ) : ZMod (2 ^ k)) = 5
+          ∨ ZMod.castHom h32 (ZMod 32) ((N : ℤ) : ZMod (2 ^ k)) = 13
+          ∨ ZMod.castHom h32 (ZMod 32) ((N : ℤ) : ZMod (2 ^ k)) = 21
+          ∨ ZMod.castHom h32 (ZMod 32) ((N : ℤ) : ZMod (2 ^ k)) = 29 := by
+    rw [map_intCast]
+    have hd : (8 : ℤ) ∣ (5 - N) := Int.modEq_iff_dvd.mp hN
+    have h32' : N % 32 = 5 ∨ N % 32 = 13 ∨ N % 32 = 21 ∨ N % 32 = 29 := by omega
+    rcases h32' with h | h | h | h
+    · refine Or.inl ?_
+      have hmod : N ≡ 5 [ZMOD 32] := Int.modEq_iff_dvd.mpr (by omega)
+      have := (ZMod.intCast_eq_intCast_iff N 5 32).mpr hmod
+      simpa using this
+    · refine Or.inr (Or.inl ?_)
+      have hmod : N ≡ 13 [ZMOD 32] := Int.modEq_iff_dvd.mpr (by omega)
+      have := (ZMod.intCast_eq_intCast_iff N 13 32).mpr hmod
+      simpa using this
+    · refine Or.inr (Or.inr (Or.inl ?_))
+      have hmod : N ≡ 21 [ZMOD 32] := Int.modEq_iff_dvd.mpr (by omega)
+      have := (ZMod.intCast_eq_intCast_iff N 21 32).mpr hmod
+      simpa using this
+    · refine Or.inr (Or.inr (Or.inr ?_))
+      have hmod : N ≡ 29 [ZMOD 32] := Int.modEq_iff_dvd.mpr (by omega)
+      have := (ZMod.intCast_eq_intCast_iff N 29 32).mpr hmod
+      simpa using this
+  constructor
+  · intro hsq
+    have hmap := IsSquare.map (ZMod.castHom h32 (ZMod 32)) hsq
+    rw [map_sub, map_pow] at hmap
+    rw [map_sub, map_pow]
+    have key : ∀ a b : ZMod 32, (b = 5 ∨ b = 13 ∨ b = 21 ∨ b = 29) →
+        IsSquare (a ^ 2 - b) → a ^ 2 - b = 4 := by decide
+    exact key _ _ hN32 hmap
+  · intro h
+    set c : ℤ := (A.val : ℤ) ^ 2 - N with hc_def
+    have hcast : ((c : ℤ) : ZMod (2 ^ k)) = A ^ 2 - ((N : ℤ) : ZMod (2 ^ k)) := by
+      rw [hc_def]; push_cast; rw [ZMod.natCast_zmod_val]
+    have hc4 : ((c : ℤ) : ZMod 32) = 4 := by
+      have hh := h
+      rw [← hcast, map_intCast] at hh
+      exact hh
+    have hcmod : c ≡ 4 [ZMOD 32] := by
+      have : ((c : ℤ) : ZMod 32) = ((4 : ℤ) : ZMod 32) := by rw [hc4]; norm_num
+      exact (ZMod.intCast_eq_intCast_iff c 4 32).mp this
+    obtain ⟨s, hs⟩ := Int.modEq_iff_dvd.mp hcmod
+    set d : ℤ := 1 - 8 * s with hd_def
+    have hcd : c = 4 * d := by rw [hd_def]; linarith [hs]
+    have hd1 : d ≡ 1 [ZMOD 8] := Int.modEq_iff_dvd.mpr ⟨s, by rw [hd_def]; ring⟩
+    obtain ⟨y, hy⟩ := isSquare_mod_two_pow_of_one_mod_eight d hd1 (k - 2)
+    have hcsq : (2 * y) ^ 2 ≡ c [ZMOD 2 ^ k] := by
+      obtain ⟨t, ht⟩ := Int.modEq_iff_dvd.mp hy
+      refine Int.modEq_iff_dvd.mpr ⟨t, ?_⟩
+      have hk2 : (2 : ℤ) ^ k = 4 * 2 ^ (k - 2) := by
+        have he : (2 : ℤ) ^ k = 2 ^ 2 * 2 ^ (k - 2) := by rw [← pow_add]; congr 1; omega
+        rw [he]; norm_num
+      rw [hk2, hcd]; linear_combination (4 : ℤ) * ht
+    have hy2 : ((2 * y : ℤ) : ZMod (2 ^ k)) ^ 2 = ((c : ℤ) : ZMod (2 ^ k)) := by
+      have h' := (ZMod.intCast_eq_intCast_iff ((2 * y) ^ 2) c (2 ^ k)).mpr hcsq
+      push_cast at h'; exact h'
+    refine ⟨((2 * y : ℤ) : ZMod (2 ^ k)), ?_⟩
+    rw [← hcast, ← hy2]; ring
+
+/-- Recursion `C_{k+1}(N) = 2·C_k(N)` for `N ≡ 5 (mod 8)`, `k ≥ 5`.  Same fibre
+argument as `passCard_succ_three`, but the preserved invariant is the value mod
+`32` (`pass_char_five`) instead of mod `8`. -/
+theorem passCard_succ_five {k : ℕ} (hk : 5 ≤ k) (N : ℤ) (hN : N ≡ 5 [ZMOD 8]) :
+    passCard ((N : ℤ) : ZMod (2 ^ (k + 1))) = 2 * passCard ((N : ℤ) : ZMod (2 ^ k)) := by
+  have hdvd : (2 ^ k : ℕ) ∣ 2 ^ (k + 1) := pow_dvd_pow 2 (Nat.le_succ k)
+  have h32k : (32 : ℕ) ∣ 2 ^ k :=
+    ⟨2 ^ (k - 5), by rw [show (32 : ℕ) = 2 ^ 5 from rfl, ← pow_add]; congr 1; omega⟩
+  have h32k1 : (32 : ℕ) ∣ 2 ^ (k + 1) :=
+    ⟨2 ^ (k + 1 - 5), by rw [show (32 : ℕ) = 2 ^ 5 from rfl, ← pow_add]; congr 1; omega⟩
+  have hmem : ∀ A : ZMod (2 ^ (k + 1)),
+      IsSquare (A ^ 2 - ((N : ℤ) : ZMod (2 ^ (k + 1))))
+        ↔ IsSquare ((ZMod.castHom hdvd (ZMod (2 ^ k)) A) ^ 2 - ((N : ℤ) : ZMod (2 ^ k))) := by
+    intro A
+    have hA32 : ZMod.castHom h32k1 (ZMod 32) A
+             = ZMod.castHom h32k (ZMod 32) (ZMod.castHom hdvd (ZMod (2 ^ k)) A) := by
+      rw [← RingHom.comp_apply, ZMod.castHom_comp]
+    have hcc : ZMod.castHom h32k1 (ZMod 32) (A ^ 2 - ((N : ℤ) : ZMod (2 ^ (k + 1))))
+             = ZMod.castHom h32k (ZMod 32)
+                 ((ZMod.castHom hdvd (ZMod (2 ^ k)) A) ^ 2 - ((N : ℤ) : ZMod (2 ^ k))) := by
+      simp only [map_sub, map_pow, map_intCast, hA32]
+    rw [pass_char_five h32k1 N hN A,
+        pass_char_five h32k N hN (ZMod.castHom hdvd (ZMod (2 ^ k)) A)]
+    exact iff_of_eq (by rw [hcc])
+  have Hf : ∀ A ∈ (Finset.univ.filter fun A : ZMod (2 ^ (k + 1)) =>
+                IsSquare (A ^ 2 - ((N : ℤ) : ZMod (2 ^ (k + 1))))),
+      ZMod.castHom hdvd (ZMod (2 ^ k)) A ∈
+        (Finset.univ.filter fun b : ZMod (2 ^ k) =>
+            IsSquare (b ^ 2 - ((N : ℤ) : ZMod (2 ^ k)))) := by
+    intro A hA
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hA ⊢
+    exact (hmem A).mp hA
+  have hfib : ∀ b ∈ (Finset.univ.filter fun b : ZMod (2 ^ k) =>
+                IsSquare (b ^ 2 - ((N : ℤ) : ZMod (2 ^ k)))),
+      ((Finset.univ.filter fun A : ZMod (2 ^ (k + 1)) =>
+          IsSquare (A ^ 2 - ((N : ℤ) : ZMod (2 ^ (k + 1))))).filter
+        (fun A => ZMod.castHom hdvd (ZMod (2 ^ k)) A = b)).card = 2 := by
+    intro b hb
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb
+    have hset : (Finset.univ.filter fun A : ZMod (2 ^ (k + 1)) =>
+          IsSquare (A ^ 2 - ((N : ℤ) : ZMod (2 ^ (k + 1))))).filter
+          (fun A => ZMod.castHom hdvd (ZMod (2 ^ k)) A = b)
+        = Finset.univ.filter (fun A : ZMod (2 ^ (k + 1)) =>
+            ZMod.castHom hdvd (ZMod (2 ^ k)) A = b) := by
+      ext A
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      constructor
+      · rintro ⟨_, h2⟩; exact h2
+      · intro hAb
+        exact ⟨(hmem A).mpr (by rw [hAb]; exact hb), hAb⟩
+    rw [hset, castHom_fiber_pair hdvd b]
+    have hcne : ((2 ^ k : ℕ) : ZMod (2 ^ (k + 1))) ≠ 0 := by
+      intro hd2
+      rw [ZMod.natCast_eq_zero_iff] at hd2
+      have hle := Nat.le_of_dvd (by positivity) hd2
+      have he : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+      have hp : 0 < 2 ^ k := by positivity
+      omega
+    apply Finset.card_pair
+    intro hcontra
+    apply hcne
+    have hz : ((b.val : ℕ) : ZMod (2 ^ (k + 1))) + ((2 ^ k : ℕ) : ZMod (2 ^ (k + 1)))
+            = ((b.val : ℕ) : ZMod (2 ^ (k + 1))) + 0 := by
+      rw [add_zero]; exact hcontra.symm
+    exact add_left_cancel hz
+  unfold passCard
+  rw [Finset.filter_congr_decidable, Finset.filter_congr_decidable]
+  rw [Finset.card_eq_sum_card_fiberwise Hf, Finset.sum_const_nat hfib, Nat.mul_comm]
+
+set_option maxHeartbeats 1000000 in
+/-- N ≡ 5 (mod 8): base level C_5 = 4. Reduce to the representative N = 5 via the
+mod-8 invariance (milestone A), then decide on the finite ring `ZMod 32`. -/
+theorem passCard_five_base (N : ℤ) (hN : N ≡ 5 [ZMOD 8]) :
+    passCard ((N : ZMod (2 ^ 5))) = 4 := by
+  have hodd : Odd N := by
+    have hd : (8 : ℤ) ∣ (5 - N) := Int.modEq_iff_dvd.mp hN
+    exact Int.odd_iff.mpr (by omega)
+  rw [passCard_eq_of_modEq_eight 5 N 5 hodd ⟨2, by norm_num⟩ hN]
+  unfold passCard
+  rw [Finset.filter_congr_decidable]
+  decide
+
 /-- N ≡ 5 (mod 8): C_m(N) = 2^(m-3) for m ≥ 5. -/
-theorem passCard_five_mod_eight (N : ℤ) (hN : N ≡ 5 [ZMOD 8]) (m : ℕ) (hm : 5 ≤ m)
-    [NeZero (2 ^ m)] :
+theorem passCard_five_mod_eight (N : ℤ) (hN : N ≡ 5 [ZMOD 8]) (m : ℕ) (hm : 5 ≤ m) :
     passCard ((N : ZMod (2 ^ m))) = 2 ^ (m - 3) := by
-  sorry
+  induction m, hm using Nat.le_induction with
+  | base => rw [passCard_five_base N hN]; norm_num
+  | succ k hk ih =>
+      rw [passCard_succ_five hk N hN, ih]
+      have hk2 : k + 1 - 3 = (k - 3) + 1 := by omega
+      rw [hk2, pow_succ]; ring
 
 /-- N ≡ 1 (mod 8): base level C_4(N) = 4. Reduce to the representative N = 1 via
 the mod-8 invariance (milestone A), then decide on the finite ring `ZMod 16`. -/
