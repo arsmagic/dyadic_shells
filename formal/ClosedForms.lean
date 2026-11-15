@@ -504,10 +504,64 @@ theorem passCard_one_mod_eight_odd (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) (m : ℕ)
     3 * passCard ((N : ZMod (2 ^ m))) = 2 ^ (m - 3) + 20 := by
   sorry
 
+/-- At least one center always passes: `A = (N+1)/2` has `A² − N = ((N−1)/2)²`.
+So `C_m(N) ≥ 1` for every odd `N` and every `m`. -/
+theorem one_le_passCard (N : ℤ) (hN : Odd N) (m : ℕ) :
+    1 ≤ passCard ((N : ZMod (2 ^ m))) := by
+  obtain ⟨j, rfl⟩ := hN
+  unfold passCard
+  rw [Finset.filter_congr_decidable]
+  refine Finset.card_pos.mpr ⟨((j + 1 : ℤ) : ZMod (2 ^ m)), ?_⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  exact ⟨((j : ℤ) : ZMod (2 ^ m)), by push_cast; ring⟩
+
 /-- Sharp uniform density π_m(N) > 1/24, i.e. 2^m < 24·C_m(N), for every odd N
-and every m. The constant 1/24 is optimal (attained in the limit for N ≡ 1 mod 8). -/
+and every m. The constant 1/24 is optimal (attained in the limit for N ≡ 1 mod 8).
+Corollary of the four closed forms (one per residue class mod 8), with the small
+levels handled by `C_m ≥ 1`. -/
 theorem passCard_density (N : ℤ) (hN : Odd N) (m : ℕ) [NeZero (2 ^ m)] :
     2 ^ m < 24 * passCard ((N : ZMod (2 ^ m))) := by
-  sorry
+  rcases le_or_lt m 4 with hm4 | hm5
+  · -- small levels: 2^m ≤ 16 < 24 ≤ 24·C_m
+    have h1 := one_le_passCard N hN m
+    have hb : (2 : ℕ) ^ m ≤ 16 := by
+      calc (2 : ℕ) ^ m ≤ 2 ^ 4 := by apply Nat.pow_le_pow_right <;> omega
+        _ = 16 := by norm_num
+    omega
+  · have hodd8 : N % 8 = 1 ∨ N % 8 = 3 ∨ N % 8 = 5 ∨ N % 8 = 7 := by
+      have := Int.odd_iff.mp hN
+      omega
+    rcases hodd8 with h8 | h8 | h8 | h8
+    · -- N ≡ 1 (mod 8)
+      have h1m : N ≡ 1 [ZMOD 8] := Int.modEq_iff_dvd.mpr (by omega)
+      have e1 : (2 : ℕ) ^ m = 2 ^ (m - 3) * 8 := by
+        rw [show (8 : ℕ) = 2 ^ 3 from rfl, ← pow_add]; congr 1; omega
+      rcases Nat.even_or_odd m with hpar | hpar
+      · have hm6 : 6 ≤ m := by have := Nat.even_iff.mp hpar; omega
+        have h := passCard_one_mod_eight_even N h1m m hm6 hpar
+        omega
+      · have h := passCard_one_mod_eight_odd N h1m m (by omega) hpar
+        omega
+    · -- N ≡ 3 (mod 8) ⟹ N ≡ 3 (mod 4)
+      have h34 : N ≡ 3 [ZMOD 4] := Int.modEq_iff_dvd.mpr (by omega)
+      rw [passCard_three_mod_four N h34 m (by omega)]
+      have e : (2 : ℕ) ^ m = 2 ^ (m - 2) * 4 := by
+        rw [show (4 : ℕ) = 2 ^ 2 from rfl, ← pow_add]; congr 1; omega
+      have hp : 0 < (2 : ℕ) ^ (m - 2) := by positivity
+      omega
+    · -- N ≡ 5 (mod 8)
+      have h5 : N ≡ 5 [ZMOD 8] := Int.modEq_iff_dvd.mpr (by omega)
+      rw [passCard_five_mod_eight N h5 m (by omega)]
+      have e : (2 : ℕ) ^ m = 2 ^ (m - 3) * 8 := by
+        rw [show (8 : ℕ) = 2 ^ 3 from rfl, ← pow_add]; congr 1; omega
+      have hp : 0 < (2 : ℕ) ^ (m - 3) := by positivity
+      omega
+    · -- N ≡ 7 (mod 8) ⟹ N ≡ 3 (mod 4)
+      have h34 : N ≡ 3 [ZMOD 4] := Int.modEq_iff_dvd.mpr (by omega)
+      rw [passCard_three_mod_four N h34 m (by omega)]
+      have e : (2 : ℕ) ^ m = 2 ^ (m - 2) * 4 := by
+        rw [show (4 : ℕ) = 2 ^ 2 from rfl, ← pow_add]; congr 1; omega
+      have hp : 0 < (2 : ℕ) ^ (m - 2) := by positivity
+      omega
 
 end DyadicShells.ClosedForms
