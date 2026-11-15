@@ -477,6 +477,21 @@ theorem passCard_one_six_base (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) :
   rw [Finset.filter_congr_decidable]
   decide
 
+/-- N ≡ 1 (mod 8): every passing center is odd — at the `ZMod 8` level its image is
+a unit.  Even centers give `A² − N ≡ 3` or `7 (mod 8)`, neither a square.  A reusable
+brick for the N ≡ 1 count, which then ranges over odd centers only. -/
+theorem one_pass_image_isUnit {k : ℕ} (h8 : (8 : ℕ) ∣ 2 ^ k) (N : ℤ) (hN : N ≡ 1 [ZMOD 8])
+    (A : ZMod (2 ^ k)) (hsq : IsSquare (A ^ 2 - ((N : ℤ) : ZMod (2 ^ k)))) :
+    IsUnit (ZMod.castHom h8 (ZMod 8) A) := by
+  have hN8 : ZMod.castHom h8 (ZMod 8) ((N : ℤ) : ZMod (2 ^ k)) = 1 := by
+    rw [map_intCast]
+    have := (ZMod.intCast_eq_intCast_iff N 1 8).mpr hN
+    simpa using this
+  have hmap := IsSquare.map (ZMod.castHom h8 (ZMod 8)) hsq
+  rw [map_sub, map_pow, hN8] at hmap
+  have key : ∀ a : ZMod 8, IsSquare (a ^ 2 - 1) → IsUnit a := by decide
+  exact key _ hmap
+
 /-- N ≡ 1 (mod 8), even m ≥ 6: 3·C_m(N) = 2^(m-3) + 16. (×3 avoids ℕ-division.) -/
 theorem passCard_one_mod_eight_even (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) (m : ℕ)
     (hm : 6 ≤ m) (hpar : Even m) [NeZero (2 ^ m)] :
