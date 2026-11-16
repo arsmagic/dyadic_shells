@@ -492,6 +492,37 @@ theorem one_pass_image_isUnit {k : ℕ} (h8 : (8 : ℕ) ∣ 2 ^ k) (N : ℤ) (hN
   have key : ∀ a : ZMod 8, IsSquare (a ^ 2 - 1) → IsUnit a := by decide
   exact key _ hmap
 
+/-- Sufficiency half of the 2-adic square characterization: `2^(2e)·w` with
+`w ≡ 1 (mod 8)` is a square in `ZMod (2^k)` for every `k`.  If `2e ≥ k` the value
+is `0`; otherwise lift `w` by Hensel at level `k − 2e` and scale by `2^e`.
+Reusable brick for the N ≡ 1 count (values `A²−1` have the form `2^(2+t)·w`). -/
+theorem isSquare_two_pow_mul (e : ℕ) (w : ℤ) (hw : w ≡ 1 [ZMOD 8]) (k : ℕ) :
+    IsSquare (((2 ^ (2 * e) * w : ℤ) : ZMod (2 ^ k))) := by
+  rcases Nat.lt_or_ge (2 * e) k with hk | hk
+  · -- 2e < k: Hensel lift of w at level k − 2e, scaled by 2^e
+    obtain ⟨y, hy⟩ := isSquare_mod_two_pow_of_one_mod_eight w hw (k - 2 * e)
+    obtain ⟨t, ht⟩ := Int.modEq_iff_dvd.mp hy
+    have hee : (2 : ℤ) ^ (2 * e) = 2 ^ e * 2 ^ e := by rw [two_mul, pow_add]
+    have hpow : (2 : ℤ) ^ k = 2 ^ (2 * e) * 2 ^ (k - 2 * e) := by
+      rw [← pow_add]; congr 1; omega
+    have hcong : (2 ^ e * y) ^ 2 ≡ 2 ^ (2 * e) * w [ZMOD 2 ^ k] := by
+      refine Int.modEq_iff_dvd.mpr ⟨t, ?_⟩
+      have key : (2 ^ (2 * e) * w) - (2 ^ e * y) ^ 2 = 2 ^ (2 * e) * (w - y ^ 2) := by
+        rw [hee]; ring
+      rw [key, hpow, ht]; ring
+    have hy2 : (((2 ^ e * y : ℤ)) : ZMod (2 ^ k)) ^ 2
+             = (((2 ^ (2 * e) * w : ℤ)) : ZMod (2 ^ k)) := by
+      have h' := (ZMod.intCast_eq_intCast_iff ((2 ^ e * y) ^ 2) (2 ^ (2 * e) * w) (2 ^ k)).mpr hcong
+      push_cast at h' ⊢; exact h'
+    exact ⟨((2 ^ e * y : ℤ) : ZMod (2 ^ k)), by rw [← hy2]; ring⟩
+  · -- 2e ≥ k: the value is 0
+    refine ⟨0, ?_⟩
+    have hz : ((2 ^ (2 * e) * w : ℤ) : ZMod (2 ^ k)) = 0 := by
+      rw [ZMod.intCast_zmod_eq_zero_iff_dvd]
+      push_cast
+      exact (pow_dvd_pow 2 hk).mul_right w
+    rw [hz]; ring
+
 /-- N ≡ 1 (mod 8), even m ≥ 6: 3·C_m(N) = 2^(m-3) + 16. (×3 avoids ℕ-division.) -/
 theorem passCard_one_mod_eight_even (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) (m : ℕ)
     (hm : 6 ≤ m) (hpar : Even m) [NeZero (2 ^ m)] :
