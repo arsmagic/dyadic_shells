@@ -8,11 +8,12 @@ make the human-equivalence-review surface ONE short, self-contained file:
 whoever reads it knows exactly what the published Propositions 3.1 / 4.1 / 4.2
 and the Target-4 milestone claim, with no dependence on the proof development.
 
-The four `Prop`-valued definitions below are the claims:
+The five `Prop`-valued definitions below are the claims:
   * `Prop31`  — soundness / factor recovery (published v11.0.3, Proposition 3.1).
   * `Prop41`  — exact quadratic-residue sieve count (Proposition 4.1).
   * `Prop42`  — uniform two-adic saturation lower bound (Proposition 4.2).
   * `Target4MilestoneA` — the `N mod 8` reduction of the exact two-adic count.
+  * `Target4MilestoneB` — the exact closed forms for every odd residue class.
 
 The inlined predicates `TwoAdicPass`, `PassingCenters`, `PassCard` are COPIES of
 the definitions used in the proof files (`TwoAdicSaturation.lean`,
@@ -85,5 +86,23 @@ def Target4MilestoneA : Prop :=
   ∀ (m : ℕ) [NeZero (2 ^ m)] (N N' : ℤ),
     Odd N → Odd N' → N ≡ N' [ZMOD 8] →
       PassCard ((N : ℤ) : ZMod (2 ^ m)) = PassCard ((N' : ℤ) : ZMod (2 ^ m))
+
+/-- **Target 4, milestone B (closed forms for the residue representatives).**
+The exact two-adic pass count `C_m = PassCard` for every odd `N`, by class mod 8:
+`N ≡ 3 (mod 4)` ⇒ `C_m = 2^(m-2)` (`m ≥ 3`, covers `N ≡ 3, 7 (mod 8)`);
+`N ≡ 5 (mod 8)` ⇒ `C_m = 2^(m-3)` (`m ≥ 5`); `N ≡ 1 (mod 8)` ⇒
+`3·C_m = 2^(m-3) + 16` for even `m ≥ 6` and `3·C_m = 2^(m-3) + 20` for odd
+`m ≥ 5`; and the sharp unconditional density `2^m < 24·C_m` for every odd `N`. -/
+def Target4MilestoneB : Prop :=
+  (∀ (N : ℤ) (m : ℕ) [NeZero (2 ^ m)], N ≡ 3 [ZMOD 4] → 3 ≤ m →
+      PassCard ((N : ℤ) : ZMod (2 ^ m)) = 2 ^ (m - 2)) ∧
+  (∀ (N : ℤ) (m : ℕ) [NeZero (2 ^ m)], N ≡ 5 [ZMOD 8] → 5 ≤ m →
+      PassCard ((N : ℤ) : ZMod (2 ^ m)) = 2 ^ (m - 3)) ∧
+  (∀ (N : ℤ) (m : ℕ) [NeZero (2 ^ m)], N ≡ 1 [ZMOD 8] → 6 ≤ m → Even m →
+      3 * PassCard ((N : ℤ) : ZMod (2 ^ m)) = 2 ^ (m - 3) + 16) ∧
+  (∀ (N : ℤ) (m : ℕ) [NeZero (2 ^ m)], N ≡ 1 [ZMOD 8] → 5 ≤ m → Odd m →
+      3 * PassCard ((N : ℤ) : ZMod (2 ^ m)) = 2 ^ (m - 3) + 20) ∧
+  (∀ (N : ℤ) (m : ℕ) [NeZero (2 ^ m)], Odd N →
+      2 ^ m < 24 * PassCard ((N : ℤ) : ZMod (2 ^ m)))
 
 end DyadicShellsStatements

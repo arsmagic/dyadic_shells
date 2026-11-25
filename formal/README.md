@@ -2,7 +2,7 @@
 
 **Research author:** Arsen A. Khachatryan (SibarS Labs; ORCID 0009-0006-7629-3833).
 
-**Status:** **Targets 1, 2 and 3 are all Lean-proved.** Target 1
+**Status:** **Targets 1, 2 and 3 are Lean-proved, and Target 4 milestones A and B (exact two-adic closed forms, independently re-checked by a second kernel) are Lean-proved; milestone C is pending.** Target 1
 (Proposition 3.1: soundness and factor recovery), Target 2
 (Proposition 4.1: exact quadratic-residue sieve count) and Target 3
 (Proposition 4.2: uniform two-adic saturation lower bound) are
@@ -48,7 +48,7 @@ lake env lean DyadicShells/AxiomAudit.lean
 
 The CI workflow runs on changes to `formal/**` in pull requests and
 on pushes to `main`, and checks for proof holes.
-Lean and Mathlib are pinned to v4.24.0.
+Lean is pinned to v4.33.1 and Mathlib to commit `0df444a…` (the reference second-kernel / nanoda setup).
 
 ## What Target 2 proves
 
@@ -68,6 +68,17 @@ uniformly in `m` (`v = v₂((N-1)/2)`), stated as
 Hensel square-lift showing the whole congruence class `A ≡ (N+1)/2`
 `(mod 2^(2v+3))` is two-adically square — so two-adic filtering saturates
 and cannot be strengthened by lifting.
+
+## What Target 4 proves
+
+`ClosedForms.lean` proves the exact two-adic pass count `C_m(N)` for every odd
+`N`, by residue class mod 8: `N ≡ 3 (mod 4)` ⇒ `C_m = 2^(m-2)`; `N ≡ 5 (mod 8)`
+⇒ `C_m = 2^(m-3)`; `N ≡ 1 (mod 8)` ⇒ `3·C_m = 2^(m-3)+16` (even `m`) / `+20`
+(odd `m`); and the sharp unconditional density `2^m < 24·C_m`. The `N mod 8`
+reduction (milestone A) is in `DyadicShells/TwoAdicExact.lean`. The closed forms
+are also restated on the Mathlib-only statement surface as `Target4MilestoneB`
+and accepted by the second-kernel comparator (nanoda). Milestone C
+(`|L_{N,2^e,k}| = C_e(kN)/2`) is not yet formalized.
 
 ## Remaining work
 

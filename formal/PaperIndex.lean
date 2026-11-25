@@ -14,6 +14,7 @@ import DyadicShells.Soundness
 import DyadicShells.QRSieve
 import DyadicShells.TwoAdicSaturation
 import DyadicShells.TwoAdicExact
+import ClosedForms
 
 namespace PaperIndex
 
@@ -71,5 +72,25 @@ alias target4_unitSquare := DyadicShells.passCard_unit_sq_mul
 
 /-- The statement-file form of Target 4, milestone A. -/
 alias target4_statement := DyadicShellsStatements.Target4MilestoneA
+
+/-! ## Target 4 (manuscript) — exact two-adic closed forms, milestone B -/
+
+/-- Milestone B: `N ≡ 3 (mod 4)` ⇒ `C_m = 2^(m-2)` (covers `N ≡ 3, 7 (mod 8)`). -/
+alias target4b_threeModFour := DyadicShells.ClosedForms.passCard_three_mod_four
+
+/-- Milestone B: `N ≡ 5 (mod 8)` ⇒ `C_m = 2^(m-3)`. -/
+alias target4b_fiveModEight := DyadicShells.ClosedForms.passCard_five_mod_eight
+
+/-- Milestone B: `N ≡ 1 (mod 8)`, even `m` ⇒ `3·C_m = 2^(m-3)+16`. -/
+alias target4b_oneModEightEven := DyadicShells.ClosedForms.passCard_one_mod_eight_even
+
+/-- Milestone B: `N ≡ 1 (mod 8)`, odd `m` ⇒ `3·C_m = 2^(m-3)+20`. -/
+alias target4b_oneModEightOdd := DyadicShells.ClosedForms.passCard_one_mod_eight_odd
+
+/-- Milestone B: sharp unconditional density `2^m < 24·C_m` for odd `N`. -/
+alias target4b_density := DyadicShells.ClosedForms.passCard_density
+
+/-- The statement-file form of Target 4, milestone B. -/
+alias target4b_statement := DyadicShellsStatements.Target4MilestoneB
 
 end PaperIndex
