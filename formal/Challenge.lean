@@ -26,3 +26,8 @@ theorem DyadicShellsStatements.prop42 : DyadicShellsStatements.Prop42 := by
 theorem DyadicShellsStatements.target4MilestoneA :
     DyadicShellsStatements.Target4MilestoneA := by
   sorry
+
+/-- Target 4, milestone B (exact closed forms for every odd residue class). -/
+theorem DyadicShellsStatements.target4MilestoneB :
+    DyadicShellsStatements.Target4MilestoneB := by
+  sorry

@@ -125,12 +125,15 @@ only on `propext`), with no `sorryAx` or `Lean.ofReduceBool`;
 `sorry`/`admit` are rejected in the same run. The proof is purely
 arithmetic/Hensel: no equidistribution or probabilistic hypothesis.
 
-## Target 4: Exact two-adic pass counts (milestone A)
+## Target 4: Exact two-adic pass counts (milestones A and B)
 
-**Mathematical status: milestone A Lean-proved; closed forms pending.**
-Manuscript draft (not yet public): exact `C_m(N) = #{A mod 2^m : A²-N square}`
+**Mathematical status: milestones A and B Lean-proved; milestone C pending.**
+Published manuscript v11.7.23: exact `C_m(N) = #{A mod 2^m : A²-N square}`
 for every odd `N` and `m`, the sharp uniform bound `π_m(N) > 1/24`, and
-`|L_{N,2^e,k}| = C_e(kN)/2` for Hittmeir's hyperbolic sieve sets.
+`|L_{N,2^e,k}| = C_e(kN)/2` for Hittmeir's hyperbolic sieve sets. Milestone A
+(the `N mod 8` reduction) and milestone B (the closed forms for every odd class
+and the unconditional density) are machine-verified; milestone C is not yet
+formalized.
 
 - [x] Unit-square invariance `passCard_unit_sq_mul` (any `ZMod n`):
 `#{A : A²-u²N square} = #{A : A²-N square}` for a unit `u`.
@@ -140,8 +143,18 @@ have equal pass counts modulo every `2^m`.
 ([run #42462026945](https://github.com/arsmagic/dyadic_shells/actions/runs/42462026945),
 branch `formal/target4-twoadic-exact`); axioms only `propext`, `Classical.choice`,
 `Quot.sound`.
-- [ ] Milestone B: closed forms for the representatives `N = 1, 3, 5, 7`.
-- [ ] Milestone C: `|L_{N,2^e,k}| = C_e(kN)/2`.
+- [x] Milestone B: closed forms for every odd class (merged to `main`, PR #13):
+`N ≡ 3 (mod 4)` ⇒ `C_m = 2^(m-2)` (`passCard_three_mod_four`, covers `3,7 mod 8`);
+`N ≡ 5 (mod 8)` ⇒ `C_m = 2^(m-3)` (`passCard_five_mod_eight`); `N ≡ 1 (mod 8)` ⇒
+`3·C_m = 2^(m-3)+16` even `m`, `+20` odd `m` (`passCard_one_mod_eight_even/odd`);
+and the now-unconditional density `2^m < 24·C_m` (`passCard_density`). Lean
+v4.33.1, Mathlib `0df444a…`; axioms only `propext`, `Classical.choice`,
+`Quot.sound`, no `sorryAx`.
+- [x] Milestone B independent re-check: restated in the Mathlib-only statement
+surface as `DyadicShellsStatements.Target4MilestoneB` (`MainResults.lean`),
+proved in `Solution.lean`, and accepted by the second-kernel comparator (nanoda)
+listed in `comparator.json`.
+- [ ] Milestone C: `|L_{N,2^e,k}| = C_e(kN)/2` (not yet formalized).
 
 ## Remaining research targets
 

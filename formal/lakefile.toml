@@ -19,7 +19,7 @@ name = "Solution"
 [[lean_lib]]
 name = "PaperIndex"
 
-# Target 4, milestone B: closed-form statements (proofs WIP).
+# Target 4, milestone B: closed forms (proved; see ClosedForms.lean).
 [[lean_lib]]
 name = "ClosedForms"
 
