@@ -15,6 +15,7 @@ import DyadicShells.QRSieve
 import DyadicShells.TwoAdicSaturation
 import DyadicShells.TwoAdicExact
 import ClosedForms
+import HyperbolicSieve
 
 namespace PaperIndex
 
@@ -92,5 +93,16 @@ alias target4b_density := DyadicShells.ClosedForms.passCard_density
 
 /-- The statement-file form of Target 4, milestone B. -/
 alias target4b_statement := DyadicShellsStatements.Target4MilestoneB
+
+/-! ## Target 4 (manuscript v11.7.23) — the hyperbolic sieve mod 2^e, milestone C -/
+
+/-- Milestone C (Theorem 3, doubled form): `2·|L_{N,2^e,k}| = C_e(k·N)`. -/
+alias target4c_theorem3 := DyadicShells.HyperbolicSieve.two_mul_card_hyperbolicSieve
+
+/-- Milestone C (Theorem 3, `/2` form): `|L_{N,2^e,k}| = C_e(k·N)/2`. -/
+alias target4c_half := DyadicShells.HyperbolicSieve.card_hyperbolicSieve_eq_half
+
+/-- The statement-file form of Target 4, milestone C. -/
+alias target4c_statement := DyadicShellsStatements.Target4MilestoneC
 
 end PaperIndex

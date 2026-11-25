@@ -125,15 +125,15 @@ only on `propext`), with no `sorryAx` or `Lean.ofReduceBool`;
 `sorry`/`admit` are rejected in the same run. The proof is purely
 arithmetic/Hensel: no equidistribution or probabilistic hypothesis.
 
-## Target 4: Exact two-adic pass counts (milestones A and B)
+## Target 4: Exact two-adic pass counts (milestones A, B and C)
 
-**Mathematical status: milestones A and B Lean-proved; milestone C pending.**
+**Mathematical status: milestones A, B and C all Lean-proved.**
 Published manuscript v11.7.23: exact `C_m(N) = #{A mod 2^m : A²-N square}`
 for every odd `N` and `m`, the sharp uniform bound `π_m(N) > 1/24`, and
 `|L_{N,2^e,k}| = C_e(kN)/2` for Hittmeir's hyperbolic sieve sets. Milestone A
 (the `N mod 8` reduction) and milestone B (the closed forms for every odd class
-and the unconditional density) are machine-verified; milestone C is not yet
-formalized.
+and the unconditional density) and milestone C (Hittmeir's hyperbolic-sieve
+identity, Theorem 3) are all machine-verified.
 
 - [x] Unit-square invariance `passCard_unit_sq_mul` (any `ZMod n`):
 `#{A : A²-u²N square} = #{A : A²-N square}` for a unit `u`.
@@ -154,7 +154,12 @@ v4.33.1, Mathlib `0df444a…`; axioms only `propext`, `Classical.choice`,
 surface as `DyadicShellsStatements.Target4MilestoneB` (`MainResults.lean`),
 proved in `Solution.lean`, and accepted by the second-kernel comparator (nanoda)
 listed in `comparator.json`.
-- [ ] Milestone C: `|L_{N,2^e,k}| = C_e(kN)/2` (not yet formalized).
+- [x] Milestone C (Theorem 3): `|L_{N,2^e,k}| = C_e(k·N)/2` for odd `N, k`,
+`e ≥ 1`, formalized in `HyperbolicSieve.lean` as `two_mul_card_hyperbolicSieve`
+(doubled form `2·|L| = C_e(k·N)`) and `card_hyperbolicSieve_eq_half` (the `/2`
+form); restated on the statement surface as `Target4MilestoneC` and accepted by
+the second-kernel comparator (nanoda). Axioms only `propext`, `Classical.choice`,
+`Quot.sound`, no `sorryAx`.
 
 ## Remaining research targets
 

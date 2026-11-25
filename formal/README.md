@@ -77,8 +77,10 @@ and cannot be strengthened by lifting.
 (odd `m`); and the sharp unconditional density `2^m < 24·C_m`. The `N mod 8`
 reduction (milestone A) is in `DyadicShells/TwoAdicExact.lean`. The closed forms
 are also restated on the Mathlib-only statement surface as `Target4MilestoneB`
-and accepted by the second-kernel comparator (nanoda). Milestone C
-(`|L_{N,2^e,k}| = C_e(kN)/2`) is not yet formalized.
+and accepted by the second-kernel comparator (nanoda). Milestone C (Theorem 3,
+`|L_{N,2^e,k}| = C_e(k·N)/2`, Hittmeir's hyperbolic sieve mod `2^e`) is proved in
+`HyperbolicSieve.lean` (`two_mul_card_hyperbolicSieve`) and likewise re-checked by
+the comparator.
 
 ## Remaining work
 

@@ -8,12 +8,13 @@ make the human-equivalence-review surface ONE short, self-contained file:
 whoever reads it knows exactly what the published Propositions 3.1 / 4.1 / 4.2
 and the Target-4 milestone claim, with no dependence on the proof development.
 
-The five `Prop`-valued definitions below are the claims:
+The six `Prop`-valued definitions below are the claims:
   * `Prop31`  — soundness / factor recovery (published v11.0.3, Proposition 3.1).
   * `Prop41`  — exact quadratic-residue sieve count (Proposition 4.1).
   * `Prop42`  — uniform two-adic saturation lower bound (Proposition 4.2).
   * `Target4MilestoneA` — the `N mod 8` reduction of the exact two-adic count.
   * `Target4MilestoneB` — the exact closed forms for every odd residue class.
+  * `Target4MilestoneC` — Hittmeir's hyperbolic-sieve identity mod `2^e`.
 
 The inlined predicates `TwoAdicPass`, `PassingCenters`, `PassCard` are COPIES of
 the definitions used in the proof files (`TwoAdicSaturation.lean`,
@@ -104,5 +105,20 @@ def Target4MilestoneB : Prop :=
       3 * PassCard ((N : ℤ) : ZMod (2 ^ m)) = 2 ^ (m - 3) + 20) ∧
   (∀ (N : ℤ) (m : ℕ) [NeZero (2 ^ m)], Odd N →
       2 ^ m < 24 * PassCard ((N : ℤ) : ZMod (2 ^ m)))
+
+/-- Copy of `DyadicShells.HyperbolicSieve.hyperbolicSieveSet`: Hittmeir's
+hyperbolic sieve set `L_{N,M,k} = { k·x + y : x·y = N }` as a finset of residues. -/
+def HyperbolicSieveSet {M : ℕ} [NeZero M] (N k : ZMod M) : Finset (ZMod M) :=
+  (Finset.univ.filter (fun p : ZMod M × ZMod M => p.1 * p.2 = N)).image
+    (fun p => k * p.1 + p.2)
+
+/-- **Target 4, milestone C (Theorem 3, doubled form).** For odd `N, k` and
+`e ≥ 1`, twice the size of Hittmeir's hyperbolic sieve set `L_{N,2^e,k}` equals
+the exact two-adic pass count `C_e(k·N) = PassCard`, i.e. `2·|L| = C_e(k·N)`
+(equivalently `|L| = C_e(k·N)/2`). -/
+def Target4MilestoneC : Prop :=
+  ∀ (N k : ℤ) (e : ℕ) [NeZero (2 ^ e)], Odd N → Odd k → 1 ≤ e →
+    2 * (HyperbolicSieveSet ((N : ℤ) : ZMod (2 ^ e)) ((k : ℤ) : ZMod (2 ^ e))).card
+      = PassCard (((k * N : ℤ)) : ZMod (2 ^ e))
 
 end DyadicShellsStatements

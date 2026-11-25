@@ -20,6 +20,7 @@ import DyadicShells.QRSieve
 import DyadicShells.TwoAdicSaturation
 import DyadicShells.TwoAdicExact
 import ClosedForms
+import HyperbolicSieve
 
 theorem DyadicShellsStatements.prop31 : DyadicShellsStatements.Prop31 :=
   fun p q a b A t hp hq ha hb hab hbb hA ht =>
@@ -45,3 +46,8 @@ theorem DyadicShellsStatements.target4MilestoneB :
    fun N m _ hN hm hpar =>
      DyadicShells.ClosedForms.passCard_one_mod_eight_odd N hN m hm hpar,
    fun N m _ hN => DyadicShells.ClosedForms.passCard_density N hN m⟩
+
+theorem DyadicShellsStatements.target4MilestoneC :
+    DyadicShellsStatements.Target4MilestoneC :=
+  fun N k e _ hN hk he =>
+    DyadicShells.HyperbolicSieve.two_mul_card_hyperbolicSieve N k hN hk e he
