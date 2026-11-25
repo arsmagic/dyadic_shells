@@ -31,3 +31,8 @@ theorem DyadicShellsStatements.target4MilestoneA :
 theorem DyadicShellsStatements.target4MilestoneB :
     DyadicShellsStatements.Target4MilestoneB := by
   sorry
+
+/-- Target 4, milestone C (Hittmeir's hyperbolic-sieve identity mod `2^e`). -/
+theorem DyadicShellsStatements.target4MilestoneC :
+    DyadicShellsStatements.Target4MilestoneC := by
+  sorry

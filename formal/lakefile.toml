@@ -1,6 +1,6 @@
 name = "DyadicShells"
 version = "0.1.0"
-defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms"]
+defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms", "HyperbolicSieve"]
 
 [[lean_lib]]
 name = "DyadicShells"
@@ -22,6 +22,10 @@ name = "PaperIndex"
 # Target 4, milestone B: closed forms (proved; see ClosedForms.lean).
 [[lean_lib]]
 name = "ClosedForms"
+
+# Target 4, milestone C: the hyperbolic sieve modulo powers of two (Theorem 3).
+[[lean_lib]]
+name = "HyperbolicSieve"
 
 [[require]]
 name = "mathlib"
