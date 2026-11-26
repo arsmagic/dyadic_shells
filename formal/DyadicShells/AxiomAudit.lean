@@ -8,6 +8,11 @@ import DyadicShells.TwoAdicExact
 import MainResults
 import Solution
 import PaperIndex
+import ClosedForms
+import HyperbolicSieve
+import SparseBias
+import SparseBiasAsymp
+import SparseFamily
 
 /-!
 # Axiom audit (Target 1)
@@ -64,3 +69,25 @@ three standard axioms. -/
 #print axioms DyadicShellsStatements.prop41
 #print axioms DyadicShellsStatements.prop42
 #print axioms DyadicShellsStatements.target4MilestoneA
+#print axioms DyadicShellsStatements.target4MilestoneB
+#print axioms DyadicShellsStatements.target4MilestoneC
+
+/-! ## Sparse-bias gates, no-finite-gate theorem, binomial lemmas, and the
+sparse-offset limits (Propositions 13-16 and Corollary 17 of the paper). -/
+#print axioms DyadicShells.SparseBias.gate_three_mod_eight
+#print axioms DyadicShells.SparseBias.gate_seven_mod_eight
+#print axioms DyadicShells.SparseBias.gate_five_mod_eight
+#print axioms DyadicShells.SparseBias.gate_five_count_mod32
+#print axioms DyadicShells.SparseBias.castHom_N_five_cases
+#print axioms DyadicShells.SparseBias.passCard_one_succ_ne_two_mul
+#print axioms DyadicShells.SparseBias.no_finite_gate_one_mod_eight
+#print axioms DyadicShells.SparseBias.sum_choose_sub_two_le
+#print axioms DyadicShells.SparseBias.choose_pred_ratio_eq
+#print axioms DyadicShells.SparseBias.choose_pred_ratio_tendsto_zero
+#print axioms DyadicShells.SparseFamily.bad_fraction_tendsto_zero
+#print axioms DyadicShells.SparseFamily.sparse_pass_limit
+#print axioms DyadicShells.SparseFamily.cor17_three
+#print axioms DyadicShells.SparseFamily.cor17_seven
+#print axioms DyadicShells.SparseFamily.cor17_five
+#print axioms DyadicShells.SparseFamily.cor17_three_anchorfree
+#print axioms DyadicShells.SparseFamily.cor17_seven_anchorfree
