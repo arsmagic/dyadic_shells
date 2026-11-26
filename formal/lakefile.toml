@@ -1,6 +1,6 @@
 name = "DyadicShells"
 version = "0.1.0"
-defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms", "HyperbolicSieve"]
+defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms", "HyperbolicSieve", "SparseBias", "SparseBiasAsymp"]
 
 [[lean_lib]]
 name = "DyadicShells"
@@ -26,6 +26,15 @@ name = "ClosedForms"
 # Target 4, milestone C: the hyperbolic sieve modulo powers of two (Theorem 3).
 [[lean_lib]]
 name = "HyperbolicSieve"
+
+# Sparse-bias note, Proposition 1: exact low-bit gates of the two-adic square
+# condition for N ≡ 3, 7 (mod 8); plus the N≡1 no-finite-gate theorem.
+[[lean_lib]]
+name = "SparseBias"
+
+# Sparse-bias note, Corollary 4 (arithmetic core): binomial ceiling and decay.
+[[lean_lib]]
+name = "SparseBiasAsymp"
 
 [[require]]
 name = "mathlib"
