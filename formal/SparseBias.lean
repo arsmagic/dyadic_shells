@@ -139,25 +139,12 @@ theorem no_finite_gate_one_mod_eight (N : ℤ) (hN : N ≡ 1 [ZMOD 8]) (j : ℕ)
   ⟨max j 5, le_max_left _ _, passCard_one_succ_ne_two_mul N hN _ (le_max_right _ _)⟩
 
 /-
-### Part 2 — binomial ratio limits (Corollary 4, arithmetic core) — NEXT ITERATION
+### Part 2 — the sparse-offset limits
 
-Kept out of the live (sorry-free) file until proved.  Statements to formalize next,
-over `Nat.choose` only (the binary-encoding bridge is a separate step):
-
-  binSum t b := ∑ w ∈ Finset.range (t+1), (b.choose w : ℝ)
-
-  -- N ≡ 7 sparse survival → 1
-  theorem gate_ratio_tendsto_one (t : ℕ) :
-      Tendsto (fun b : ℕ => binSum t (b - 2) / binSum t b) atTop (𝓝 1)
-
-  -- N ≡ 3 sparse survival → 0
-  theorem gate_ratio_shift_tendsto_zero (t : ℕ) :
-      Tendsto (fun b : ℕ => (∑ w ∈ Finset.range (t+1), ((b-2).choose (w-1) : ℝ)) / binSum t b)
-        atTop (𝓝 0)
-
-Strategy: `binSum t b` is a polynomial in `b` of degree `t` with leading coefficient
-`1/t!` (since `C(b,w) ~ b^w/w!`).  Hence `binSum t (b-2)/binSum t b → 1`, and the
-shifted numerator (degree `t-1`) over `binSum t b` (degree `t`) → 0.
+The end-to-end assembly of the sparse-family limits (Proposition 16 and Corollary 17 of the
+paper, including the Hamming-weight model and the binomial-mass estimates) lives in
+`SparseFamily.lean`; the analytic input is `choose_pred_ratio_tendsto_zero` from
+`SparseBiasAsymp.lean`.
 -/
 
 end DyadicShells.SparseBias

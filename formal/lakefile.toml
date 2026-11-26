@@ -1,6 +1,6 @@
 name = "DyadicShells"
 version = "0.1.0"
-defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms", "HyperbolicSieve", "SparseBias", "SparseBiasAsymp"]
+defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms", "HyperbolicSieve", "SparseBias", "SparseBiasAsymp", "SparseFamily"]
 
 [[lean_lib]]
 name = "DyadicShells"
@@ -35,6 +35,10 @@ name = "SparseBias"
 # Sparse-bias note, Corollary 4 (arithmetic core): binomial ceiling and decay.
 [[lean_lib]]
 name = "SparseBiasAsymp"
+
+# Proposition 16 and Corollary 17 of the paper: sparse-offset families, end to end.
+[[lean_lib]]
+name = "SparseFamily"
 
 [[require]]
 name = "mathlib"
