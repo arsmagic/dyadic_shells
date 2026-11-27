@@ -1,6 +1,6 @@
 name = "DyadicShells"
 version = "0.1.0"
-defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms", "HyperbolicSieve", "SparseBias", "SparseBiasAsymp", "SparseFamily"]
+defaultTargets = ["DyadicShells", "MainResults", "Challenge", "Solution", "PaperIndex", "ClosedForms", "HyperbolicSieve", "SparseBias", "SparseBiasAsymp", "SparseFamily", "SquareCount", "DensityLimits", "MultiplierPrime"]
 
 [[lean_lib]]
 name = "DyadicShells"
@@ -39,6 +39,19 @@ name = "SparseBiasAsymp"
 # Proposition 16 and Corollary 17 of the paper: sparse-offset families, end to end.
 [[lean_lib]]
 name = "SparseFamily"
+
+# Lemma 6 of the paper: the number of squares modulo 2^n (Stangl's count).
+[[lean_lib]]
+name = "SquareCount"
+
+# Corollary 2 of the paper: the uniform bound pi_m(N) > 1/24, the three limits,
+# and sharpness of the constant 1/24.
+[[lean_lib]]
+name = "DensityLimits"
+
+# Proposition 12 of the paper: an odd prime dividing the multiplier exactly once.
+[[lean_lib]]
+name = "MultiplierPrime"
 
 [[require]]
 name = "mathlib"

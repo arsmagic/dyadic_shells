@@ -13,6 +13,9 @@ import HyperbolicSieve
 import SparseBias
 import SparseBiasAsymp
 import SparseFamily
+import SquareCount
+import DensityLimits
+import MultiplierPrime
 
 /-!
 # Axiom audit (Target 1)
@@ -91,3 +94,56 @@ sparse-offset limits (Propositions 13-16 and Corollary 17 of the paper). -/
 #print axioms DyadicShells.SparseFamily.cor17_five
 #print axioms DyadicShells.SparseFamily.cor17_three_anchorfree
 #print axioms DyadicShells.SparseFamily.cor17_seven_anchorfree
+
+/-! ## Lemma 6, Corollary 2 and Proposition 12 of the paper: the results that
+previously had only a paper proof. -/
+-- Include every new declaration, including private helpers, and reject any
+-- axiom outside the standard kernel assumptions.
+open Lean Elab Command
+
+run_cmd do
+  let env ← getEnv
+  let wanted : Array Name := #[
+    `DyadicShells.SquareCount.IsSqMod,
+    `DyadicShells.SquareCount.sqCard,
+    `DyadicShells.SquareCount.neZero_two_pow,
+    `DyadicShells.SquareCount.isSqMod_iff_isSquare,
+    `DyadicShells.SquareCount.sqCard_eq_card_zmod,
+    `DyadicShells.SquareCount.isSqMod_odd_iff,
+    `DyadicShells.SquareCount.dvd_four_of_isSqMod_even,
+    `DyadicShells.SquareCount.isSqMod_four_mul_iff,
+    `DyadicShells.SquareCount.card_one_mod_eight,
+    `DyadicShells.SquareCount.sqCard_add_two,
+    `DyadicShells.SquareCount.sqCard_zero,
+    `DyadicShells.SquareCount.sqCard_one,
+    `DyadicShells.SquareCount.sqCard_two,
+    `DyadicShells.SquareCount.sqCard_odd_closed,
+    `DyadicShells.SquareCount.sqCard_even_closed,
+    `DyadicShells.SquareCount.sqCard_closed,
+    `DyadicShells.DensityLimits.passDensity,
+    `DyadicShells.DensityLimits.neZero_two_pow,
+    `DyadicShells.DensityLimits.two_pow_pos_real,
+    `DyadicShells.DensityLimits.passDensity_gt,
+    `DyadicShells.DensityLimits.passDensity_eq_three,
+    `DyadicShells.DensityLimits.tendsto_passDensity_three,
+    `DyadicShells.DensityLimits.passDensity_eq_five,
+    `DyadicShells.DensityLimits.tendsto_passDensity_five,
+    `DyadicShells.DensityLimits.passDensity_one_sub_le,
+    `DyadicShells.DensityLimits.tendsto_bound,
+    `DyadicShells.DensityLimits.tendsto_passDensity_one,
+    `DyadicShells.DensityLimits.passDensity_sharp,
+    `DyadicShells.MultiplierPrime.exists_sq_sub_dvd_succ,
+    `DyadicShells.MultiplierPrime.exists_sq_sub_dvd,
+    `DyadicShells.MultiplierPrime.isSquare_zmod_pow_of_mod_p,
+    `DyadicShells.MultiplierPrime.passCard_multiplier_prime
+  ]
+  for desired in wanted do
+    let actual ← if env.contains desired then pure desired else do
+      match env.constants.toList.find? (fun entry => entry.1.toString.endsWith ("." ++ desired.toString)) with
+      | some entry => pure entry.1
+      | none => throwError "Missing declaration: {desired}"
+    let axioms ← liftCoreM (collectAxioms actual)
+    if axioms.any (fun name => !(#[`propext, `Classical.choice, `Quot.sound]).contains name) then
+      throwError "Unexpected axioms for {actual}: {axioms}"
+    elabCommand (← `(command| #print axioms $(mkIdent actual)))
+  logInfo m!"Audited {wanted.size} declarations; all axioms are permitted."
